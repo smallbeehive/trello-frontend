@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 // import App from '../App.vue'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
+import Board from '../components/Board.vue'
 import NotFound from '../components/NotFound.vue'
 
 // Vue의 use라는 함수를 이용해서 추가해야되요. 이걸 미들웨어라고 하는데 이렇게 추가해줘야 사용할 수 있어요.
@@ -24,6 +25,7 @@ const router = new VueRouter({
     // 위 두개 경로의 url이 매칭되지 않으면 마지막 규칙이 적용되는데 Not found가 뜰거에요.
     { path: '/', component: Home },
     { path: '/login', component: Login },
+    { path: '/b/:bid', component: Board },
     { path: '*', component: NotFound}
   ],
   // 그런데 특이하게 #가 붙었죠. 그것은 브라우저에서 라우팅할 때 hashback 모드라는 것이
