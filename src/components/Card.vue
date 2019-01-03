@@ -12,6 +12,12 @@ export default {
       cid: 0
     }
   },
+  watch: {
+    // '$route'(newVal, oldVal) {   // '$route' works!
+    $route() {
+      this.cid = this.$route.params.cid
+    }
+  },
   created() {
     this.cid = this.$route.params.cid
   }
