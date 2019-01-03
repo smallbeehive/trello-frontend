@@ -2,6 +2,8 @@
     <div>
       Board
       <div>bid: {{bid}}</div>
+      <hr />
+      <router-view></router-view>
     </div>
 </template>
 
