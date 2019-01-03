@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+import {board} from '../api'
 
 export default {
   data() {
@@ -43,6 +44,7 @@ export default {
     fetchData() {
       this.loading = true
 
+      // 1) XMLHttpRequest
       // const req = new XMLHttpRequest()
       // req.open('GET', 'http://localhost:3000/health')
       // req.send()
@@ -55,22 +57,32 @@ export default {
       //     response: JSON.parse(req.response)
       //   }
       // })
-      axios.get('http://localhost:3000/boards')
-        .then(res => {
-          this.boards = res.data
+
+      // 2) axios directly
+      // axios.get('http://localhost:3000/boards')
+      //   .then(res => {
+      //     this.boards = res.data
+      //   })
+      //   .catch(res => {
+      //     // this.error =  res.response.data
+      //     // 에러가 발생한다라는 것은 요청했을 때 토큰 정보가 없거나 잘못되서
+      //     // Unauthorized 라는 401 에러코드가 응답이 될 겁니다.
+      //     // 따라서 여기서는 로그인 페이지로 이동을 해야겠죠.
+      //     // 그때 사용할 수 있는게 Vue rotuer입니다.
+      //     // this.$router라는 객체를 통해서 쓸 수 있어요.
+      //     // router에 replace라는 함수를 통해서 경로를 이동시킬 수 있어요.
+      //     this.$router.replace('/login')
+      //   })
+      //   // then과 catch과 수행된 다음에 실행될 거예요.
+      //   // 그러기 때문에 공통으로 수행될 로직을 넣음
+      //   .finally(() => {
+      //     this.loading = false
+      //   })
+
+      board.fetch()
+        .then(data => {
+          this.boards = data
         })
-        .catch(res => {
-          // this.error =  res.response.data
-          // 에러가 발생한다라는 것은 요청했을 때 토큰 정보가 없거나 잘못되서
-          // Unauthorized 라는 401 에러코드가 응답이 될 겁니다.
-          // 따라서 여기서는 로그인 페이지로 이동을 해야겠죠.
-          // 그때 사용할 수 있는게 Vue rotuer입니다.
-          // this.$router라는 객체를 통해서 쓸 수 있어요.
-          // router에 replace라는 함수를 통해서 경로를 이동시킬 수 있어요.
-          this.$router.replace('/login')
-        })
-        // then과 catch과 수행된 다음에 실행될 거예요.
-        // 그러기 때문에 공통으로 수행될 로직을 넣음
         .finally(() => {
           this.loading = false
         })
