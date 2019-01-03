@@ -5,9 +5,14 @@
         Board List:
         <div v-if="loading">Loading...</div>
         <div v-else>Api result:
-          <pre>{{apiRes}}</pre>
-          <pre>{{error}}</pre>
+          <div v-for="b in boards" :key="b.id">
+            {{b}}
+          </div>
         </div>
+
+        <!-- <div v-else>Api result:
+          <pre>{{boards}}</pre>
+        </div> -->
         <ul>
           <li>
             <router-link to="/b/1">Board 1</router-link>
@@ -27,8 +32,8 @@ export default {
   data() {
     return {
       loading: false,
-      apiRes: '',
-      error: ''
+      boards: [],
+      // error: ''  // 리다이렉트 때문에 더이상 쓰지 않음
     }
   },
   created() {
@@ -50,12 +55,19 @@ export default {
       //     response: JSON.parse(req.response)
       //   }
       // })
-      axios.get('http://localhost:3000/health')
+      axios.get('http://localhost:3000/boards')
         .then(res => {
-          this.apiRes = res.data
+          this.boards = res.data
         })
         .catch(res => {
-          this.error = res.response.data
+          // this.error =  res.response.data
+          // 에러가 발생한다라는 것은 요청했을 때 토큰 정보가 없거나 잘못되서
+          // Unauthorized 라는 401 에러코드가 응답이 될 겁니다.
+          // 따라서 여기서는 로그인 페이지로 이동을 해야겠죠.
+          // 그때 사용할 수 있는게 Vue rotuer입니다.
+          // this.$router라는 객체를 통해서 쓸 수 있어요.
+          // router에 replace라는 함수를 통해서 경로를 이동시킬 수 있어요.
+          this.$router.replace('/login')
         })
         // then과 catch과 수행된 다음에 실행될 거예요.
         // 그러기 때문에 공통으로 수행될 로직을 넣음
