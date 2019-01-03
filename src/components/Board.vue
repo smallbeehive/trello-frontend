@@ -1,9 +1,12 @@
 <template>
     <div>
       Board
-      <div>bid: {{bid}}</div>
-      <router-link :to="`/b/${bid}/c/1`">Card 1</router-link>
-      <router-link :to="`/b/${bid}/c/2`">Card 2</router-link>
+      <div v-if="loading">loading board...</div>
+      <div v-else>
+        <div>bid: {{bid}}</div>
+        <router-link :to="`/b/${bid}/c/1`">Card 1</router-link>
+        <router-link :to="`/b/${bid}/c/2`">Card 2</router-link>
+      </div>
       <hr />
       <router-view></router-view>
     </div>
@@ -13,10 +16,13 @@
 export default {
   data() {
     return {
-      bid: 0
+      bid: 0,
+      loading: false
     }
   },
   created() {
+    this.fetchData()
+
     // console.log(this.$route.params.bid)
     // 이렇게 볼 수 있는 이유는 router를 설정할 때
     // Vue의 use라는 함수를 통해서 VueRouter를
@@ -25,7 +31,16 @@ export default {
     // $route라는 변수를 통해서 router 정보에 접근할 수
     // 있는 겁니다.
     // 그러면 이 정보를 BoardComponent 화면에 출력해 보겠습니다.
-    this.bid = this.$route.params.bid
+    // this.bid = this.$route.params.bid
+  },
+  methods: {
+    fetchData() {
+      this.loading = true
+      setTimeout(() => {
+        this.bid = this.$route.params.bid
+        this.loading = false
+      }, 500)
+    }
   }
 }
 </script>
