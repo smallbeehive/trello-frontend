@@ -16,6 +16,8 @@
     <div class="board-list" ref="boardList">
       <div class="board-item" v-for="b in boards" :key="b.id"
         :data-bgcolor="b.bgColor" ref="boardItem">
+      <!-- <div class="board-item" v-for="b in boards" :key="b.id"
+        :style="`background-color: ${b.bgColor}`" ref="boardItem"> -->
         <router-link :to="`/b/${b.id}`">
           <div class="board-item-title">{{b.title}}</div>
         </router-link>
@@ -46,6 +48,15 @@ export default {
     // This is why the '/' redirected to login page instantly
     this.fetchData()
   },
+  // data 객체에 변화가 감지되면 updated 훅이 실행됩니다.
+  // 이 친구가 하는 일은, 이 컴포넌트의 레퍼런스 중에 boardItem이라는 녀석을
+  // 찾아와요.
+  // 얘는 보드의 개수 만큼 생기는데 유념해야 보셔야 할 게
+  // 이 bgColor라는 값이 data-bgcolor라는 키에 들어가 있어요.
+  // 다시 updated로 와서, 그러한 보드 아이템 element를 순회하면서
+  // 그 element의 스타일 중에 backgroundColor를 변경합니다.
+  // 그때 dataset의 bgColor를 가져와서 세팅하는 거죠.
+  // 그렇기 때문에 화면에 이 심플보드가 파란색으로 나오는 겁니다.
   updated() {
     this.$refs.boardItem.forEach(el => {
       el.style.backgroundColor = el.dataset.bgcolor
