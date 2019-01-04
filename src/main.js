@@ -3,10 +3,12 @@ import router from './router' // .js는 빼도 되구요, index도 빼도 됩니
                               // router 폴더만 명시를 해주면 그 아래있는 index.js를
                               // 가져오게 됩니다.
 import App from './App.vue'
+import store from './store'
 
 new Vue({
   el: '#app',
   router,
+  store,
   // https://router.vuejs.org/#introduction
   // 예제와는 조금 다르게 필요한 부분이 있는데, 예제에서는 <router-view></router-view>라는 곳에
   // 컴포넌트가 렌더링되는데요
