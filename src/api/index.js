@@ -22,7 +22,8 @@ const request = (method, url, data) => {
     .catch(result => {
       // const {'status' : status} = result.response
       const {status} = result.response
-      if (status === UNAUTHORIZED) return onUnauthorized()
+      // if (status === UNAUTHORIZED) return onUnauthorized()
+      if (status === UNAUTHORIZED) onUnauthorized()
 
       // 처리 되지 않는 401 이외의 에러들은 throw
       // 나중에 필요하면 추가로 로직을 개발하도록 함.
