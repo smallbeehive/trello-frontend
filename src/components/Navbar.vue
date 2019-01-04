@@ -1,20 +1,32 @@
-<!-- 네비게이션 역할을 하는 부분은 Navbar라는 컴포넌트로
-분리해 낼거예요. -->
+<!-- 네비게이션 역할을 하는 부분은 Navbar라는 컴포넌트로 분리해 낼거예요. -->
 <template>
   <nav class="header">
     <div class="header-logo">
       <router-link to="/">Home</router-link>
     </div>
     <div class="header-auth">
-      <router-link to="/login">Login</router-link>
-      <!-- <a>Logout</a> -->
+      <a href="" v-if="isAuth" @click.prevent="logout">Logout</a>
+      <router-link v-else to="/login">Login</router-link>
     </div>
   </nav>
 </template>
 
 <script>
-export default {
+import {setAuthInHeader} from '../api'
 
+export default {
+  computed: {
+    isAuth() {
+      return !!localStorage.getItem('token')
+    }
+  },
+  methods: {
+    logout() {
+      delete localStorage.token
+      setAuthInHeader(null)
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 

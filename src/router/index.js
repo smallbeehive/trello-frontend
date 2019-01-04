@@ -39,7 +39,6 @@ const requireAuth = (to, from, next) => {
   isAuth ? next() : next(loginPath)
 }
 
-
 const router = new VueRouter({
   // routes // short for `routes: routes`
   routes: [
