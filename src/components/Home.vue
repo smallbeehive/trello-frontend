@@ -28,7 +28,8 @@
         </a>
       </div>
     </div>
-    <Modal></Modal>
+    <!-- <AddBoard></AddBoard> -->
+    <AddBoard v-if="isAddBoard" @close="isAddBoard=false" />
   </div>
 </template>
 
@@ -36,15 +37,18 @@
 // import axios from 'axios'
 import {board} from '../api'
 // import router from '../router'
-import Modal from './Modal.vue'
+import AddBoard from './AddBoard.vue'
 
 export default {
-  components: {Modal},
+  components: {
+    AddBoard
+  },
   data() {
     return {
       loading: false,
       boards: [],
       // error: ''  // 리다이렉트 때문에 더이상 쓰지 않음
+      isAddBoard: false
     }
   },
   created() {
@@ -115,7 +119,7 @@ export default {
         })
     },
     addBoard() {
-      console.log('addBoard()')
+      this.isAddBoard = true
     }
   }
 }
