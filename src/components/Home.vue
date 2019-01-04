@@ -49,8 +49,13 @@ export default {
     return {
       loading: false,
       boards: [],
-      // error: ''  // 리다이렉트 때문에 더이상 쓰지 않음
-      isAddBoard: false
+      // error: ''  // -> 리다이렉트 때문에 더이상 쓰지 않음
+      // isAddBoard: false  // -> vuex store로 이동
+    }
+  },
+  computed: {
+    isAddBoard() {
+      return this.$store.state.isAddBoard
     }
   },
   created() {
