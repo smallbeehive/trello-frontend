@@ -29,7 +29,9 @@
       </div>
     </div>
     <!-- <AddBoard></AddBoard> -->
-    <AddBoard v-if="isAddBoard" @close="isAddBoard=false" />
+    <AddBoard v-if="isAddBoard"
+              @close="isAddBoard=false"
+              @submit="onAddBoard" />
   </div>
 </template>
 
@@ -120,6 +122,18 @@ export default {
     },
     addBoard() {
       this.isAddBoard = true
+    },
+    onAddBoard(title) {
+      console.log(title)
+      board.create(title)
+        .then(() => this.fetchData())
+        // 그리고 성공을 하게 되면 return 값이 올건데
+        // 그 리턴값은 쓰지 않고 요렇게 해보면 어떨까요?
+        // fetchData(). 이렇게 하면 다시 모든 보드 목록을
+        // 호출해서 화면을 다시 그릴거예요.
+        // 왜냐면 fetchData가 board 조회 api를 호출하고
+        // this.boards 데이터를 갱신하니까
+        // 다시 화면이 refresh 될거예요.
     }
   }
 }
