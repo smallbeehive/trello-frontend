@@ -38,6 +38,13 @@ export const setAuthInHeader = token => {
   axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null;
 }
 
+// console.log('hi! this is from src/api/index.js')
+
+// When redirected, set token data into axios header automatically
+// const {token} = localStorage
+const {'token' : token} = localStorage
+if (token) setAuthInHeader(token)
+
 export const board = {
   fetch() {
     return request('get', '/boards')
