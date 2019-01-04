@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import {auth} from '../api'
+
 export default {
   data() {
     return {
@@ -35,7 +37,15 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.email, this.password)
+      // console.log(this.email, this.password)
+      auth.login(this.email, this.password)
+        .then(data => {
+          localStorage.setItem('token', data.accessToken)
+          console.log(data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
