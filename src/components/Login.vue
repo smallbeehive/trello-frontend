@@ -8,7 +8,7 @@
           v-model="email" autofocus placeholder="e.g., test@test.com" />
       </div>
       <div>
-        <label for="password">Passwrod</label>
+        <label for="password">Password</label>
         <input class="form-control" type="password"
           v-model="password" placeholder="123123" />
       </div>
@@ -34,6 +34,7 @@ export default {
   computed: {
     invalidForm() {
       return !this.email || !this.password
+      // return !!this.email && !!this.password
     }
   },
   created() {

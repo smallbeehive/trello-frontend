@@ -35,6 +35,7 @@ export default {
     }
   },
   created() {
+    // This is why the '/' redirected to login page instantly
     this.fetchData()
   },
   methods: {
