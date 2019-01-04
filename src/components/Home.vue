@@ -9,10 +9,6 @@
             {{b}}
           </div>
         </div>
-
-        <!-- <div v-else>Api result:
-          <pre>{{boards}}</pre>
-        </div> -->
         <ul>
           <li>
             <router-link to="/b/1">Board 1</router-link>
@@ -28,6 +24,7 @@
 <script>
 // import axios from 'axios'
 import {board} from '../api'
+// import router from '../router'
 
 export default {
   data() {
@@ -63,8 +60,8 @@ export default {
       //   .then(res => {
       //     this.boards = res.data
       //   })
-      //   .catch(res => {
-      //     // this.error =  res.response.data
+      //   .catch(err => {
+      //     // this.error =  err.response.data
       //     // 에러가 발생한다라는 것은 요청했을 때 토큰 정보가 없거나 잘못되서
       //     // Unauthorized 라는 401 에러코드가 응답이 될 겁니다.
       //     // 따라서 여기서는 로그인 페이지로 이동을 해야겠죠.
@@ -72,6 +69,7 @@ export default {
       //     // this.$router라는 객체를 통해서 쓸 수 있어요.
       //     // router에 replace라는 함수를 통해서 경로를 이동시킬 수 있어요.
       //     this.$router.replace('/login')
+      //     // router.push('/login')
       //   })
       //   // then과 catch과 수행된 다음에 실행될 거예요.
       //   // 그러기 때문에 공통으로 수행될 로직을 넣음
@@ -83,7 +81,8 @@ export default {
         .then(data => {
           this.boards = data
         })
-        .finally(() => {
+        // .finally(() => {
+        .finally(_=> {
           this.loading = false
         })
     }
