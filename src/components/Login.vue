@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {auth} from '../api'
+import {auth, setAuthInHeader} from '../api'
 
 export default {
   data() {
@@ -52,10 +52,12 @@ export default {
         .then(data => {
           // console.log(data)
           localStorage.setItem('token', data.accessToken)
+          setAuthInHeader(data.accessToken)
           this.$router.push(this.rPath)
         })
         .catch(err => {
-          console.log(err)
+          // console.log(err)
+          this.error = err.data.error
         })
     }
   }
