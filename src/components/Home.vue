@@ -28,6 +28,7 @@
         </a>
       </div>
     </div>
+    <Modal></Modal>
   </div>
 </template>
 
@@ -35,8 +36,10 @@
 // import axios from 'axios'
 import {board} from '../api'
 // import router from '../router'
+import Modal from './Modal.vue'
 
 export default {
+  components: {Modal},
   data() {
     return {
       loading: false,
