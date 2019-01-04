@@ -53,6 +53,7 @@ export default {
           // console.log(data)
           localStorage.setItem('token', data.accessToken)
           setAuthInHeader(data.accessToken)
+          // console.log(this.rPath)
           this.$router.push(this.rPath)
         })
         .catch(err => {
