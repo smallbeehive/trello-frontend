@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as api from '../api'
+// import * as api from '../api'
 // 아 요부분이네요. 요렇게 해야죠.
 // 왜냐면 api 부분에보면 board와 auth를 반환하고 있어요.
 // 요렇게 api라는 닉네임으로 받아줘야 겠죠.
+import state from './state'
+import getters from './getters'
+import mutations from './mutations'
+import actions from './actions'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {
-    isAddBoard: false,
-    boards: [],
-    token: null
-  },
+  state,
   // 요번에는 getter를 하나 추가해보겠습니다.
   // 인증여부를 확인하는 getter에요.
   // 요거는 어디서 쓰냐면 router에서 쓰고 있어요.
@@ -24,57 +24,9 @@ const store = new Vuex.Store({
   // getter는 일종의 Vue 컴포넌트의 computed 속성이랑 좀 유사한 점이 있어요.
   // 사용할 때는 isAuth 함수를 호출하는 것이 아니라 isAuth라는 변수처럼
   // 쓸 수 있어요.
-  getters: {
-    isAuth (state) {
-      return !!state.token
-    }
-  },
-  mutations: {
-    SET_IS_ADD_BOARD (state, toggle) {
-      state.isAddBoard = toggle
-    },
-    SET_BOARDS (state, boards) {
-      state.boards = boards
-    },
-    // 이제 로그인과 로그아웃 처리를 해야되는데
-    // 로그인 같은 경우에는 요 상태(state token) 값을 저장하고
-    // 로그아웃은 token 값을 삭제하는 기능을 하고 있어요.
-    // 그래서 변이로 만들면 좋을 것 같습니다.
-    LOGIN (state, token) {
-      if (!token) return
-      state.token = token
-      localStorage.setItem('token', token)
-      api.setAuthInHeader(token)
-    },
-    LOGOUT (state) {
-      state.token = null
-      delete localStorage.token
-      api.setAuthInHeader(null)
-    }
-    // 이렇게 해서 변이를 추가했구요, 마지막으로
-    // action을 추가해야겠죠. 로그아웃 같은 경우에는
-    // 별도로 api 호출을 하지 않아요.
-    // 반면에 로그인은 api 호출을 합니다.
-    // 그래서 로그인에 대한 action만 만들어 보도록 하겠습니다.
-    // 왜냐면 action은 api 호출과 같은 비동기 로직을 담당하는 역할을 하죠!
-  },
-  actions: {
-    // context 객체를 처음에 받는데 저는 사용하지 않을거니까
-    // _로 해놓고요. 입력은 어떤 객체로 받을건데
-    // title이라는 키를 사용하겠습니다.
-    ADD_BOARD (_, {title}) {
-      return api.board.create(title)
-    },
-    FETCH_BOARDS ({commit}) {
-      return api.board.fetch().then(data => {
-        commit('SET_BOARDS', data.list)
-      })
-    },
-    LOGIN ({commit}, {email, password}) {
-      return api.auth.login(email, password)
-        .then(({accessToken}) => commit('LOGIN', accessToken))
-    }
-  }
+  getters,
+  mutations,
+  actions
 })
 
 // 마지막으로 또 하나 해야할 건 어플리케이션이 구동되었을 때
