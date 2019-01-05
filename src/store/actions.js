@@ -26,6 +26,21 @@ const actions = {
     return api.board.fetch(id).then(data => {
       commit('SET_BOARD', data.item)
     })
+  },
+  // ADD_CARD (context, {title, listId, pos) {
+  ADD_CARD ({dispatch, state}, {title, listId, pos}) {
+    return api.card.create(title, listId, pos)
+    // 그래서 여기서 api를 성공해서 카드 추가를 완료했으면
+    // 그 결과가 화면에 뿌려져야 될거예요.
+    // 화면에 뿌려질려면 다시한번 보드 조회 api를 호출하는게 좋을 것 같아요.
+      .then(() => dispatch('FETCH_BOARD', {id: state.board.id}))
+      // 이 context의 dispatch 함수를 해체 문법으로 가져오겠습니다.
+      // 그리고 FETCH_BOARD를 호출하도록 할게요.
+      // 그런데 이 FETCH_BOARD는 두번째 인자로 아이디를 받고 있습니다.
+      // id는 board의 아이디를 받게 되겠죠.
+      // 이 board는 우리가 상태로 관리하고 있어요. state.js를 보면
+      // board라는 객체를 관리하고 있죠. 이게 선택된 board 객체입니다.
+      // state도 가져와야 되는데 이것도 context 객체에서 가져옵니다.
   }
 }
 
