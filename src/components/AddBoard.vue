@@ -69,8 +69,8 @@ export default {
       // title은 this.input을 전달해주죠.
       // submit 이벤트를 발생시킬 때 input을 전달하지 않고 그냥
       // submit 이벤트만 발생을 할게요.
-      this.$emit('submit')
       this.$store.dispatch('ADD_BOARD', {title: this.input})
+      this.$emit('submit')
     }
   }
 }
