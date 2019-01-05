@@ -23,7 +23,7 @@
         </router-link>
       </div>
       <div class="board-item board-item-new">
-        <a class="new-board-btn" href="" @click.prevent="addBoard">
+        <a class="new-board-btn" href="" @click.prevent="SET_IS_ADD_BOARD(true)">
           Create new board...
         </a>
       </div>
@@ -40,7 +40,7 @@
 import {board} from '../api'
 // import router from '../router'
 import AddBoard from './AddBoard.vue'
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 
 export default {
   components: {
@@ -155,10 +155,18 @@ export default {
     // 실제로 변경해야 될 것은 요 store에 있는 isAddBoard라는 state값을
     // 변경해야하는데 요것을 변경하기 위해서는 mutation 즉 변이 라는 것을
     // 사용해야 합니다.
-    addBoard() {
-      // this.isAddBoard = true
-      this.$store.commit('SET_IS_ADD_BOARD', true)
-    },
+
+    // addBoard() {
+    //   // this.isAddBoard = true
+    //   this.$store.commit('SET_IS_ADD_BOARD', true)
+    // },
+    // mapState처럼 mutation도 헬퍼함수가 있어요.
+    // 문서에 보면 mapMutations 헬퍼함수 사용하는 부분이 있는데
+    // mapMutations도 똑같이 배열로 mutation 이름을 넣어주면은
+    // 이번엔 computed 속성이 아닌 method 속성에 추가할 수 있습니다.
+    ...mapMutations([
+      'SET_IS_ADD_BOARD'
+    ]),
     onAddBoard(title) {
       console.log(title)
       board.create(title)
