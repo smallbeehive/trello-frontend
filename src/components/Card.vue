@@ -7,7 +7,10 @@
   <Modal class="modal-card">
   <div slot="header" class="modal-card-header">
     <div class="modal-card-header-title">
-      <input class="form-control" type="text" :value="card.title" readonly>
+      <input class="form-control" type="text" :value="card.title"
+             :readonly="!toggleTitle"
+             @click="toggleTitle=true"
+             @blur="onBlurTitle">
     </div>
     <a class="modal-close-btn" href="" @click.prevent="onClose">&times;</a>
   </div>
@@ -32,6 +35,11 @@ import {mapActions, mapState} from 'vuex'
 export default {
   components: {
     Modal
+  },
+  data() {
+    return {
+      toggleTitle: false
+    }
   },
   computed: {
     ...mapState({
@@ -96,6 +104,9 @@ export default {
     ]),
     onClose() {
       this.$router.push(`/b/${this.board.id}`)
+    },
+    onBlurTitle() {
+      this.toggleTitle = false
     }
   }
 
