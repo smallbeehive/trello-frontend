@@ -40,14 +40,26 @@ export const setAuthInHeader = token => {
 
 // console.log('hi! this is from src/api/index.js')
 
+// const {'token' : token} = localStorage
+// if (token) setAuthInHeader(token)
+
+// 1) my explanaton
 // When redirected, set token data into axios header automatically
-// const {token} = localStorage
-const {'token' : token} = localStorage
-if (token) setAuthInHeader(token)
-// [ Vuex 적용 - 인증 1 ]
+
+// 2) [ Vuex 적용 - 인증 1 ]
 // 우선 어플리케이션이 구동되면 요 api를 담당하는 부분에서 로직이 하나 돕니다.
 // 그거는 localStorage에서 토큰 정보를 읽어오고 ajax를 보내기 위한
 // requst 헤더에 토큰을 저장하는 역할을 합니다.
+
+// 3) [ Vuex 적용 - 인증 1 ] 댓글
+// 확인할 수 있는 가장 좋은 부분은 각 코드 근처에 console.log()를 찍어 보는 것입니다.
+// 전자는 JS코드가 로딩될때 딱 한번 먼저 실행됩니다.
+// 후자는 이후에 라우팅이 동작할때마다 beforeEnter 훅에서 실행됩니다.
+
+// 4) [ Vuex 적용 - 인증 2 ]
+// 어플리케이션이 구동할 때 localStorage를 읽어서 요청헤더를 세팅하는 부분이 있죠.
+// 요부분은 삭제해도 되요. 왜냐면 store에서 그 일을 대신하고 있죠.
+// 그래서 더이상 api/index.js는 로그인 관련된 일은 하지 않아요.
 
 export const board = {
   fetch() {
