@@ -6,6 +6,8 @@ import Login from '../components/Login.vue'
 import Board from '../components/Board.vue'
 import Card from '../components/Card.vue'
 import NotFound from '../components/NotFound.vue'
+import store from '../store'
+
 
 // Vue의 use라는 함수를 이용해서 추가해야되요. 이걸 미들웨어라고 하는데 이렇게 추가해줘야 사용할 수 있어요.
 Vue.use(VueRouter)
@@ -22,7 +24,12 @@ Vue.use(VueRouter)
 const requireAuth = (to, from, next) => {
   // 토큰 정보가 있으면 문자열이 저장될 것이고 없으면 undefined 값이
   // 저장이 될거예요.
-  const isAuth = localStorage.getItem('token')
+
+  // [ Vuex 적용 - 인증 2 ]
+  // const isAuth = localStorage.getItem('token')
+  // 아예 isAuth라는 변수를 쓰지 말고 아래 부분을 대체할게요.
+  // 요렇게하면 더 이상 라우터 족에서는 인증 관련된 코드는 없어요.
+
   // 그리고 또 하나 여기서 추가적으로 할게 loginPath를 정해줍니다.
   // 기본적으로는 이게 로그인 경로에요.
   // 그런데 로그인 페이지에 갔다가 로그인이 완료한 다음에 현재 페이지로 돌아와야 되잖아요.
@@ -36,7 +43,8 @@ const requireAuth = (to, from, next) => {
   // next 함수를 호출해서 라우팅 로직을 계속 이어서 수행하는 거구요.
   // 그렇지 않을 경우에는 loginPath 경로로 리다이렉트 해버리는거죠.
   const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
-  isAuth ? next() : next(loginPath)
+  // isAuth ? next() : next(loginPath)
+  store.getters.isAuth ? next() : next(loginPath)
 }
 
 const router = new VueRouter({
