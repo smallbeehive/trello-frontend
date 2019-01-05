@@ -1,9 +1,12 @@
 <template>
-    <Modal>
-      Card
-      <div v-if="loading">loading card...</div>
-      <div v-else>cid: {{cid}}</div>
-    </Modal>
+  <Modal>
+    <div slot="body">
+      {{card}}
+    </div>
+    <!-- Card
+    <div v-if="loading">loading card...</div>
+    <div v-else>cid: {{cid}}</div> -->
+  </Modal>
 </template>
 
 <script>
@@ -12,16 +15,16 @@
 // 요 자체가 카드 컴포넌트니까요.
 // 쓸려면 모달을 가져와야 겠죠.
 import Modal from './Modal.vue'
+import {mapActions, mapState} from 'vuex'
 
 export default {
   components: {
     Modal
   },
-  data() {
-    return {
-      cid: 0,
-      loading: false
-    }
+  computed: {
+    ...mapState({
+      card: 'card'
+    })
   },
   // watch: {
   //   // '$route'(newVal, oldVal) {   // '$route' works!
@@ -37,7 +40,7 @@ export default {
   //   this.fetchData()
   //   // this.cid = this.$route.params.cid
   // },
-  watch: {
+
     // 좀 더 코드를 개선해볼게요. watch를 설정할 때
     // 이렇게도 할 수 있어요.
     // 함수가 아닌 객체를 설정할 수 있는데
@@ -47,21 +50,39 @@ export default {
     // true를 주면 바로 즉시 시행하는 거예요.
     // created 안의 훅과 중복이죠.
 
-    // $route: {
-    '$route': {
-      handler: 'fetchData',
-      immediate: true
-    }
+  // [ 카드 상세 조회 2 - API 연동 ]
+  // data() {
+  //   return {
+  //     cid: 0,
+  //     loading: false
+  //   }
+  // },
+  // watch: {
+  //   // $route: {
+  //   '$route': {
+  //     handler: 'fetchData',
+  //     immediate: true
+  //   }
+  // },
+  // methods: {
+  //   fetchData() {
+  //     this.loading = true
+  //     setTimeout(() => {
+  //       this.cid = this.$route.params.cid
+  //       this.loading = false
+  //     }, 500)
+  //   }
+  // }
+  created() {
+    const id = this.$route.params.cid
+    this.FETCH_CARD({id})
   },
   methods: {
-    fetchData() {
-      this.loading = true
-      setTimeout(() => {
-        this.cid = this.$route.params.cid
-        this.loading = false
-      }, 500)
-    }
+    ...mapActions([
+      'FETCH_CARD'
+    ])
   }
+
 }
 </script>
 
