@@ -50,6 +50,12 @@ const actions = {
       // 변이함수를 호출하겠습니다. SET_CARD 라고 할게요.
       commit('SET_CARD', data.item)
     })
+  },
+  UPDATE_CARD ({dispatch, state}, {id, title, description, pos, listId}) {
+    return api.card.update(id, {title, description, pos, listId})
+    // 이게 업데이트 카드를 하고 나면 업데이트 된 정보가 또 화면에 뿌려줘야 겠죠.
+    // 화면을 갱신하려면 보드 정보를 FETCH해 오면 될 것 같아요.
+      .then(() => dispatch('FETCH_BOARD', {id: state.board.id}))
   }
 }
 
