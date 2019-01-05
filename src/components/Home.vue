@@ -41,7 +41,7 @@
 import {board} from '../api'
 // import router from '../router'
 import AddBoard from './AddBoard.vue'
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
   components: {
@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       loading: false,
-      boards: [],
+      // boards: [],  // -> [ Vuex 적용 - 보드 목록 조회 ]
       // error: ''  // -> 리다이렉트 때문에 더이상 쓰지 않음
       // isAddBoard: false  // -> vuex store로 이동
     }
@@ -74,9 +74,14 @@ export default {
 
   // 3) vuex mapState + es6 Spread syntax
   computed: {
-      ...mapState([
-      'isAddBoard'
-    ]),
+    //   ...mapState([
+    //   'isAddBoard'
+    // ]),
+      ...mapState({
+      // 'isAddBoard'
+      isAddBoard: 'isAddBoard',
+      boards: 'boards'
+    }),
     // foo() {
     //
     // }
@@ -100,6 +105,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions([
+      'FETCH_BOARDS'
+    ]),
     fetchData() {
       this.loading = true
 
@@ -138,14 +146,19 @@ export default {
       //   .finally(() => {
       //     this.loading = false
       //   })
-      board.fetch()
-        .then(data => {
-          this.boards = data.list
-        })
-        // .finally(() => {
-        .finally(_=> {
-          this.loading = false
-        })
+
+      // [ Vuex 적용 - 보드 목록 조회 ]
+      // board.fetch()
+      //   .then(data => {
+      //     this.boards = data.list
+      //   })
+      //   .finally(_=> {
+      //     this.loading = false
+      //   })
+      // ->
+      this.FETCH_BOARDS().finally(_=> {
+        this.loading = false
+      })
     },
     // 그러면 팝업을 띄우기 위해서는 'Create Board'를 클릭했을 때
     // 동작하는 함수를 수정해야 합니다.
@@ -167,6 +180,7 @@ export default {
     ...mapMutations([
       'SET_IS_ADD_BOARD'
     ]),
+
     // onAddBoard(title) {
     //   console.log(title)
     //   board.create(title)
