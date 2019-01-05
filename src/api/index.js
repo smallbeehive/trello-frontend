@@ -62,8 +62,8 @@ export const setAuthInHeader = token => {
 // 그래서 더이상 api/index.js는 로그인 관련된 일은 하지 않아요.
 
 export const board = {
-  fetch() {
-    return request('get', '/boards')
+  fetch(id) {
+    return id ? request('get', `/boards/${id}`) : request('get', '/boards')
   },
   create(title) {
     return request('post', '/boards', {title})
