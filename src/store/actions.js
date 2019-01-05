@@ -41,6 +41,15 @@ const actions = {
       // 이 board는 우리가 상태로 관리하고 있어요. state.js를 보면
       // board라는 객체를 관리하고 있죠. 이게 선택된 board 객체입니다.
       // state도 가져와야 되는데 이것도 context 객체에서 가져옵니다.
+  },
+  FETCH_CARD ({commit}, {id}) {
+    return api.card.fetch(id).then(data => {
+      // 그런 다음에 하나 할 것은 이 카드 정보를 받았으면
+      // 카드 정보도 전역상태에 넣어주는게 편리할 것 같아요.
+      // 그래서 data를 받으면 카드를 우리 상태에 추가하기 위해서
+      // 변이함수를 호출하겠습니다. SET_CARD 라고 할게요.
+      commit('SET_CARD', data.item)
+    })
   }
 }
 
