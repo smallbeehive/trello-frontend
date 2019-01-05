@@ -18,7 +18,10 @@
   <div slot="body">
     <h3>Description</h3>
     <textarea  class="form-control" cols="30" rows="3" placeholder="Add a more detailed description..."
-      readonly
+      :readonly="!toggleDesc"
+      @click="toggleDesc=true"
+      @blur="onBlurDesc"
+      ref="inputDesc"
       v-model="card.description"></textarea>
   </div>
   <div slot="footer"></div>
@@ -39,7 +42,8 @@ export default {
   },
   data() {
     return {
-      toggleTitle: false
+      toggleTitle: false,
+      toggleDesc: false
     }
   },
   computed: {
@@ -121,6 +125,13 @@ export default {
       // (created에 있는) 요거를 해주면 되는데, id 값도 받아와야 되기 때문에
       // fetchCard()라는 method로 (기존 created 안의 코드를)
       // refactoring 할게요.
+        .then(() => this.fetchCard())
+    },
+    onBlurDesc() {
+      this.toggleDesc = false
+      const description = this.$refs.inputDesc.value.trim()
+      if (!description) return
+      this.UPDATE_CARD({id: this.card.id, description})
         .then(() => this.fetchCard())
     }
   }
