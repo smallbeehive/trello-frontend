@@ -1,7 +1,7 @@
 <template>
   <div class="add-card">
     <form>
-      <input class="form-control" type="text">
+      <input class="form-control" type="text" ref="inputText">
       <button class="btn btn-success" type="submit" >Add Card</button>
       <a class="cancel-add-btn" href="" @click.prevent="$emit('close')">&times;</a>
     </form>
@@ -14,6 +14,9 @@ export default {
     return {
       inputTitle: ''
     }
+  },
+  mounted() {
+    this.$refs.inputText.focus()
   }
 }
 </script>
