@@ -1,8 +1,9 @@
 <template>
   <div class="add-card">
     <form>
-      <input class="form-control" type="text" ref="inputText">
-      <button class="btn btn-success" type="submit" >Add Card</button>
+      <input class="form-control" type="text" v-model="inputTitle" ref="inputText">
+      <!-- <button class="btn" :class="{'btn-success': valid}" type="submit" >Add Card</button> -->
+      <button class="btn btn-success" :disabled="invalidInput" type="submit" >Add Card</button>
       <a class="cancel-add-btn" href="" @click.prevent="$emit('close')">&times;</a>
     </form>
   </div>
@@ -12,7 +13,19 @@
 export default {
   data() {
     return {
-      inputTitle: ''
+      inputTitle: '',
+      valid: ''
+    }
+  },
+  // watch: {
+  //   inputTitle(v) {
+  //     console.log(v)
+  //     this.valid = v.trim().length > 0
+  //   }
+  // },
+  computed: {
+    invalidInput() {
+      return !this.inputTitle.trim()
     }
   },
   mounted() {
