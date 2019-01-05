@@ -83,9 +83,17 @@ export default {
 
       // [ Vues 적용 - 보드 목록 조회 ]
       // 3) mapActions 사용 (2) - ADD_BOARD + FETCH_BOARDS
-      this.ADD_BOARD({title: this.input}).then(() => {
-        this.FETCH_BOARDS()
-      })
+      // this.ADD_BOARD({title: this.input}).then(() => {
+      //   this.FETCH_BOARDS()
+      // })
+
+      // 4) [보드 조회 화면 개발 1] - 보드 생성 후 성한 보드 화면 이동
+      // 이 ADD_BOARD가 완료되면 다시 FETCH_BOARDS를 하고 있는데
+      // 이 부분을 바꿔주면 될 것 같아요.
+      // 그래서 완료되면 새로 생성된 아이디를 이용해서 리다이렉트를 해주면 될 것 같습니다.
+      // 그렇게 하려면 action 부분에서 응답값으로 board id를 넘겨주면 될 것 같아요.
+      this.ADD_BOARD({title: this.input})
+        .then(({id}) => this.$router.push(`/b/${id}`))
     }
   }
 }

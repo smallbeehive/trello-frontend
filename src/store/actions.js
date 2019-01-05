@@ -5,7 +5,8 @@ const actions = {
   // _로 해놓고요. 입력은 어떤 객체로 받을건데
   // title이라는 키를 사용하겠습니다.
   ADD_BOARD (_, {title}) {
-    return api.board.create(title)
+    // return api.board.create(title)
+    return api.board.create(title).then(data => data.item)
   },
   FETCH_BOARDS ({commit}) {
     return api.board.fetch().then(data => {
