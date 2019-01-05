@@ -40,6 +40,7 @@
 import {board} from '../api'
 // import router from '../router'
 import AddBoard from './AddBoard.vue'
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -53,10 +54,31 @@ export default {
       // isAddBoard: false  // -> vuex store로 이동
     }
   },
+  // 1) vuex store
+  // computed: {
+  //   isAddBoard() {
+  //     return this.$store.state.isAddBoard
+  //   }
+  // },
+
+  // 2) vuex mapState
+  // computed: mapState([
+  //     'isAddBoard'
+  // ]),
+  // computed 속성에 mapState 결과값을 설정해버리면
+  // 따로 computed 속성을 추가할 수 없어요.
+  // 그래서 es6 문법의 해체 문법을 써줍니다.
+  // 이렇게 해서 다른 속성을 추가할 수 있겟죠.
+  // 보통은 요렇게 해서 사용합니다.
+
+  // 3) vuex mapState + es6 Spread syntax
   computed: {
-    isAddBoard() {
-      return this.$store.state.isAddBoard
-    }
+      ...mapState([
+      'isAddBoard'
+    ]),
+    // foo() {
+    //
+    // }
   },
   created() {
     // This is why the '/' redirected to login page instantly
@@ -125,8 +147,16 @@ export default {
           this.loading = false
         })
     },
+    // 그러면 팝업을 띄우기 위해서는 'Create Board'를 클릭했을 때
+    // 동작하는 함수를 수정해야 합니다.
+    // 'Create Board'를 클릭하게 되면 'addBoard' 함수가 호출이 되죠.
+    // 그러면 addBoard에서는 isAddBoard를 true값으로 바꾸는데
+    // 사실 요거는 잘못된 코드죠.
+    // 실제로 변경해야 될 것은 요 store에 있는 isAddBoard라는 state값을
+    // 변경해야하는데 요것을 변경하기 위해서는 mutation 즉 변이 라는 것을
+    // 사용해야 합니다.
     addBoard() {
-      this.isAddBoard = true
+      // this.isAddBoard = true
     },
     onAddBoard(title) {
       console.log(title)
