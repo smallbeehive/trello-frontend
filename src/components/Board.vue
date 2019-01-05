@@ -126,6 +126,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  touch-action: none;
 }
 .board-header {
   flex: none;
