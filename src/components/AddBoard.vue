@@ -55,7 +55,22 @@ export default {
     addBoard() {
       // this.$emit('close')
       this.SET_IS_ADD_BOARD(false)
-      this.$emit('submit', this.input)
+      // this.$emit('submit', this.input)
+
+      // [ 액션(Action) ]
+      // 그리고 이 액션을 호출하려면 스토어의 dispatch 함수를 써서
+      // 해야겠죠. 저는 AddBoard 부분에 가서 직접 호출하도록 하겠습니다.
+      // AddBoard 같은 경우에는 뭔가 입력이 다 끝나고 엔터를 치거나
+      // save 버튼을 클릭하면 호출하는 부분이에요.
+      // 여기서 상위로 submit 이벤트를 발생했는데 그것이 아니라
+      // 저는 바로 actions 함수를 호출할게요.
+      // store의 dispatch 함수를 호출하고 ADD_BOARD라는 액션함수를
+      // 호출하게끔 합니다. 그리고 여기서 페이로드를 전달해주는데
+      // title은 this.input을 전달해주죠.
+      // submit 이벤트를 발생시킬 때 input을 전달하지 않고 그냥
+      // submit 이벤트만 발생을 할게요.
+      this.$emit('submit')
+      this.$store.dispatch('ADD_BOARD', {title: this.input})
     }
   }
 }

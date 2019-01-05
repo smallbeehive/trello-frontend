@@ -137,7 +137,6 @@ export default {
       //   .finally(() => {
       //     this.loading = false
       //   })
-
       board.fetch()
         .then(data => {
           this.boards = data.list
@@ -167,17 +166,26 @@ export default {
     ...mapMutations([
       'SET_IS_ADD_BOARD'
     ]),
-    onAddBoard(title) {
-      console.log(title)
-      board.create(title)
-        .then(() => this.fetchData())
-        // 그리고 성공을 하게 되면 return 값이 올건데
-        // 그 리턴값은 쓰지 않고 요렇게 해보면 어떨까요?
-        // fetchData(). 이렇게 하면 다시 모든 보드 목록을
-        // 호출해서 화면을 다시 그릴거예요.
-        // 왜냐면 fetchData가 board 조회 api를 호출하고
-        // this.boards 데이터를 갱신하니까
-        // 다시 화면이 refresh 될거예요.
+    // onAddBoard(title) {
+    //   console.log(title)
+    //   board.create(title)
+    //     .then(() => this.fetchData())
+    //     // 그리고 성공을 하게 되면 return 값이 올건데
+    //     // 그 리턴값은 쓰지 않고 요렇게 해보면 어떨까요?
+    //     // fetchData(). 이렇게 하면 다시 모든 보드 목록을
+    //     // 호출해서 화면을 다시 그릴거예요.
+    //     // 왜냐면 fetchData가 board 조회 api를 호출하고
+    //     // this.boards 데이터를 갱신하니까
+    //     // 다시 화면이 refresh 될거예요.
+    // },
+    onAddBoard() {
+      // [ 액션(Action) ]
+      // 그리고 Home component에 가보면 submit 이벤트가 발생할 때
+      // onAddBoard 함수가 호출되죠.
+      // 그래서 onAddBoard 함수에서는 요 title은 받지 않구요.
+      // api call도 하지 않습니다.
+      // 단순히 fetchData만 호출하도록 변경했어요.
+      this.fetchData()
     }
   }
 }
