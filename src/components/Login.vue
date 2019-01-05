@@ -21,6 +21,7 @@
 
 <script>
 import {auth, setAuthInHeader} from '../api'
+import {mapActions} from 'vuex'
 
 export default {
   data() {
@@ -47,18 +48,29 @@ export default {
     this.rPath = this.$route.query.rPath || '/'
   },
   methods: {
+    ...mapActions([
+      'LOGIN'
+    ]),
     onSubmit() {
-      // console.log(this.email, this.password)
-      auth.login(this.email, this.password)
+      // auth.login(this.email, this.password)
+      //   .then(data => {
+      //     // console.log(data)
+      //     localStorage.setItem('token', data.accessToken)
+      //     setAuthInHeader(data.accessToken)
+      //     // console.log(this.rPath)
+      //     this.$router.push(this.rPath)
+      //   })
+      //   .catch(err => {
+      //     // console.log(err)
+      //     this.error = err.data.error
+      //   })
+
+      // [ Vuex 적용 - 인증 2 ]
+      this.LOGIN({email: this.email, password: this.password})
         .then(data => {
-          // console.log(data)
-          localStorage.setItem('token', data.accessToken)
-          setAuthInHeader(data.accessToken)
-          // console.log(this.rPath)
           this.$router.push(this.rPath)
         })
         .catch(err => {
-          // console.log(err)
           this.error = err.data.error
         })
     }
