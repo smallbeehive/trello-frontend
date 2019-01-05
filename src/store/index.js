@@ -72,7 +72,7 @@ const store = new Vuex.Store({
     },
     LOGIN ({commit}, {email, password}) {
       return api.auth.login(email, password)
-        .then({accessToken}) => commit('LOGIN', accessToken)
+        .then(({accessToken}) => commit('LOGIN', accessToken))
     }
   }
 })
