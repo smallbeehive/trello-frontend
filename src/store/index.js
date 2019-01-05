@@ -77,4 +77,16 @@ const store = new Vuex.Store({
   }
 })
 
+// 마지막으로 또 하나 해야할 건 어플리케이션이 구동되었을 때
+// 브라우저 저장소를 확인하죠.
+// 토큰이 있는지 없는지 localStorage에서 체크 합니다.
+// store는 위에서 선언한 객체죠. store에 바로 commit 함수를
+// 호출할 수 있어요.
+
+// 기본적으로 어플리케이션이 구동할 때 localStorage에서
+// token 정보를 읽어와 로그인 처리하는 요 로직을 만들었습니다.
+const {token} = localStorage
+store.commit('LOGIN', token)
+
+
 export default store
