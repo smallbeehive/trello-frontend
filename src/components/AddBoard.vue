@@ -23,7 +23,7 @@
 
 <script>
 import Modal from './Modal.vue'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapActions} from 'vuex'
 
 export default {
   components: {
@@ -49,6 +49,9 @@ export default {
     ...mapMutations([
       'SET_IS_ADD_BOARD'
     ]),
+    ...mapActions([
+      'ADD_BOARD'
+    ]),
     // close() {
     //   this.$emit('close')
     // },
@@ -69,7 +72,12 @@ export default {
       // title은 this.input을 전달해주죠.
       // submit 이벤트를 발생시킬 때 input을 전달하지 않고 그냥
       // submit 이벤트만 발생을 할게요.
-      this.$store.dispatch('ADD_BOARD', {title: this.input})
+
+      // 1) store.dispatch 이용
+      // this.$store.dispatch('ADD_BOARD', {title: this.input})
+
+      // 2) mapActions 사용
+      this.ADD_BOARD({title: this.input})
       this.$emit('submit')
     }
   }
