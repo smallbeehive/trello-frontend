@@ -1,15 +1,22 @@
 <template>
-    <div>
+    <Modal>
       Card
       <div v-if="loading">loading card...</div>
-      <div v-else>
-        <div>cid: {{cid}}</div>
-      </div>
-    </div>
+      <div v-else>cid: {{cid}}</div>
+    </Modal>
 </template>
 
 <script>
+// [ 카드 상세 조회1 - 라우팅 ]
+// 우리는 이 모달을 카드를 출력해주는 Card.vue component에서 쓸겁니다.
+// 요 자체가 카드 컴포넌트니까요.
+// 쓸려면 모달을 가져와야 겠죠.
+import Modal from './Modal.vue'
+
 export default {
+  components: {
+    Modal
+  },
   data() {
     return {
       cid: 0,
