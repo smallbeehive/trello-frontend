@@ -10,7 +10,8 @@
       <input class="form-control" type="text" :value="card.title"
              :readonly="!toggleTitle"
              @click="toggleTitle=true"
-             @blur="onBlurTitle">
+             @blur="onBlurTitle"
+             ref="inputTitle">
     </div>
     <a class="modal-close-btn" href="" @click.prevent="onClose">&times;</a>
   </div>
@@ -95,18 +96,32 @@ export default {
   //   }
   // }
   created() {
-    const id = this.$route.params.cid
-    this.FETCH_CARD({id})
+    // const id = this.$route.params.cid
+    // this.FETCH_CARD({id})
+    this.fetchCard()
   },
   methods: {
     ...mapActions([
-      'FETCH_CARD'
+      'FETCH_CARD',
+      'UPDATE_CARD'
     ]),
     onClose() {
       this.$router.push(`/b/${this.board.id}`)
     },
+    fetchCard() {
+      const id = this.$route.params.cid
+      this.FETCH_CARD({id})
+    },
     onBlurTitle() {
       this.toggleTitle = false
+      const title = this.$refs.inputTitle.value.trim()
+      if (!title) return
+      this.UPDATE_CARD({id: this.card.id, title})
+      // 호출이 완료되면 여기서 다시 카드를 FETCH해주면 되겠죠.
+      // (created에 있는) 요거를 해주면 되는데, id 값도 받아와야 되기 때문에
+      // fetchCard()라는 method로 (기존 created 안의 코드를)
+      // refactoring 할게요.
+        .then(() => this.fetchCard())
     }
   }
 
