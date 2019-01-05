@@ -44,6 +44,10 @@ export const setAuthInHeader = token => {
 // const {token} = localStorage
 const {'token' : token} = localStorage
 if (token) setAuthInHeader(token)
+// [ Vuex 적용 - 인증 1 ]
+// 우선 어플리케이션이 구동되면 요 api를 담당하는 부분에서 로직이 하나 돕니다.
+// 그거는 localStorage에서 토큰 정보를 읽어오고 ajax를 보내기 위한
+// requst 헤더에 토큰을 저장하는 역할을 합니다.
 
 export const board = {
   fetch() {
