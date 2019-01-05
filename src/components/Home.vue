@@ -28,9 +28,10 @@
         </a>
       </div>
     </div>
-    <!-- <AddBoard></AddBoard> -->
-    <AddBoard v-if="isAddBoard"
+    <!-- <AddBoard v-if="isAddBoard"
               @close="isAddBoard=false"
+              @submit="onAddBoard" /> -->
+    <AddBoard v-if="isAddBoard"
               @submit="onAddBoard" />
   </div>
 </template>
