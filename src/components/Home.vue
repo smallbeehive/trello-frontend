@@ -12,6 +12,8 @@
     </div>
   </div> -->
   <div>
+    <div v-if="loading">Loading...</div>
+
     <div class="home-title">Personal Boards</div>
     <div class="board-list" ref="boardList">
       <div class="board-item" v-for="b in boards" :key="b.id"
@@ -31,8 +33,7 @@
     <!-- <AddBoard v-if="isAddBoard"
               @close="isAddBoard=false"
               @submit="onAddBoard" /> -->
-    <AddBoard v-if="isAddBoard"
-              @submit="onAddBoard" />
+    <AddBoard v-if="isAddBoard" />
   </div>
 </template>
 
@@ -193,15 +194,20 @@ export default {
     //     // this.boards 데이터를 갱신하니까
     //     // 다시 화면이 refresh 될거예요.
     // },
-    onAddBoard() {
-      // [ 액션(Action) ]
-      // 그리고 Home component에 가보면 submit 이벤트가 발생할 때
-      // onAddBoard 함수가 호출되죠.
-      // 그래서 onAddBoard 함수에서는 요 title은 받지 않구요.
-      // api call도 하지 않습니다.
-      // 단순히 fetchData만 호출하도록 변경했어요.
-      this.fetchData()
-    }
+
+    // [ Vues 적용 - 보드 목록 조회 ]
+    // onAddBoard() {
+    //   // [ 액션(Action) ]
+    //   // 그리고 Home component에 가보면 submit 이벤트가 발생할 때
+    //   // onAddBoard 함수가 호출되죠.
+    //   // 그래서 onAddBoard 함수에서는 요 title은 받지 않구요.
+    //   // api call도 하지 않습니다.
+    //   // 단순히 fetchData만 호출하도록 변경했어요.
+    //   this.fetchData()
+    // }
+    // ->
+    // AddBoard.vue 에서 3) mapActions 사용 (2) - ADD_BOARD + FETCH_BOARDS
+    // 로 인해 onAddBoard() 필요 없어짐.
   }
 }
 </script>

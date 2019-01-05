@@ -50,7 +50,8 @@ export default {
       'SET_IS_ADD_BOARD'
     ]),
     ...mapActions([
-      'ADD_BOARD'
+      'ADD_BOARD',
+      'FETCH_BOARDS'
     ]),
     // close() {
     //   this.$emit('close')
@@ -76,9 +77,15 @@ export default {
       // 1) store.dispatch 이용
       // this.$store.dispatch('ADD_BOARD', {title: this.input})
 
-      // 2) mapActions 사용
-      this.ADD_BOARD({title: this.input})
-      this.$emit('submit')
+      // 2) mapActions 사용 - ADD_BOARD
+      // this.ADD_BOARD({title: this.input})
+      // this.$emit('submit')
+
+      // [ Vues 적용 - 보드 목록 조회 ]
+      // 3) mapActions 사용 (2) - ADD_BOARD + FETCH_BOARDS
+      this.ADD_BOARD({title: this.input}).then(() => {
+        this.FETCH_BOARDS()
+      })
     }
   }
 }
