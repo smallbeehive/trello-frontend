@@ -17,6 +17,19 @@
           <div class="board-header">
             <span class="board-title">{{board.title}}</span>
           </div>
+          <div class="list-section-wrapper">
+            <div class="list-section">
+              <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
+                <!-- v-for를 쓸때는 :key attribute를 바인딩해야되죠
+                그래서 요 배열안에서 유일한 식별자를 할당하는데 보통은 id를 할당합니다.
+                그런데 여기서는 미리 pos라고 해서 pos 정보를 할당할게요.
+                요거는 뒤에 설명할거지만 postion이라고 해서 drag and drop할 때
+                위치 정보를 저장하는 값입니다.
+                그래서 요것도 유일한 정보이기 때문에 포지션 정보를 키로 할당했습니다.-->
+                <List v-bind:data="list" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -24,7 +37,12 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import List from './List.vue'
+
 export default {
+  components: {
+    List
+  },
   data() {
     return {
       bid: 0,
