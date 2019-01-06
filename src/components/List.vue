@@ -1,7 +1,12 @@
 <template>
   <div class="list">
     <div class="list-header">
-      <div class="list-header-title">{{data.title}}</div>
+      <input v-if="isEditTitle" type="text" class="form-control input-title"
+            ref="inputTitle">
+      <div v-else class="list-header-title"
+          @click="onClickTitle">
+          {{data.title}}
+      </div>
     </div>
     <div class="card-list">
       <cardItem v-for="card in data.cards"
@@ -31,7 +36,14 @@ export default {
   props: ['data'],
   data() {
     return {
-      isAddCard: false
+      isAddCard: false,
+      isEditTitle: false
+    }
+  },
+  methods: {
+    onClickTitle() {
+      this.isEditTitle = true
+      this.$nextTick(_ => this.$refs.inputTitle.focus())
     }
   }
 }
