@@ -106,6 +106,6 @@ export const card = {
 export const auth = {
   login(email, password) {
     // return request('post', '/login', {'email': email, 'password': password})
-    return request('post', '/user/login/', {email, password})
+    return request('post', '/user/login/', {username: email, password})
   }
 }
