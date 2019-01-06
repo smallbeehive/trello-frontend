@@ -57,10 +57,12 @@ export default {
       this.$nextTick(_ => this.$refs.inputTitle.focus())
     },
     onBlurTitle() {
-      this.isEditTitle = false
+      // this.isEditTitle = false
+      this.onSubmitTitle()
     },
     onSubmitTitle() {
-      this.onBlurTitle()
+      // this.onBlurTitle()
+      this.restore()
 
       this.inputTitle = this.inputTitle.trim()
       if (!this.inputTitle) return
@@ -69,6 +71,9 @@ export default {
       const title = this.inputTitle
       if (title === this.data.title) return
       this.UPDATE_LIST({id, title})
+    },
+    restore() {
+      this.isEditTitle = false
     }
   }
 }
