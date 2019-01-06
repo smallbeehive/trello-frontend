@@ -28,7 +28,8 @@
           </div>
           <div class="list-section-wrapper">
             <div class="list-section">
-              <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
+              <div class="list-wrapper" v-for="list in board.lists" :key="list.pos"
+                :data-list-id="list.id">
                 <!-- v-for를 쓸때는 :key attribute를 바인딩해야되죠
                 그래서 요 배열안에서 유일한 식별자를 할당하는데 보통은 id를 할당합니다.
                 그런데 여기서는 미리 pos라고 해서 pos 정보를 할당할게요.
@@ -72,6 +73,7 @@ export default {
       cDragger: null,
       // dragularCards 라고 되있는데 이거는 좀 간단한 이름으로
       // cDragger라고 할게요. 왜냐면 dragger를 통해서 만들었다는 의도에요.
+      lDragger: null,
       isEditTitle: false,
       inputTitle: ''
     }
@@ -139,6 +141,9 @@ export default {
   updated() {
     // updated도 메서드로 좀 빼는게 나을 것 같아요.
     this.setCardDragabble()
+
+    // [ 리스트 이동 ]
+    this.setListDragabble()
 
     // if (this.dragulaCards) this.dragulaCards.destroy()
     // this.dragulaCards = dragula([
@@ -215,7 +220,8 @@ export default {
     ...mapActions([
       'FETCH_BOARD',
       'UPDATE_CARD',
-      'UPDATE_BOARD'
+      'UPDATE_BOARD',
+      'UPDATE_LIST'
     ]),
     fetchData() {
       this.loading = true
@@ -303,6 +309,29 @@ export default {
         // 그래서 고 부분을 만들어볼게요.
         // 카드를 추가할 때 onSubmit이죠.
         // AddCard component에서 position 값을 계산해줘야되요.
+      })
+    },
+    // [ 리스트 이동 ]
+    setListDragabble() {
+      if (this.lDragger) this.lDragger.destroy()
+
+      this.lDragger = dragger.init(Array.from(this.$el.querySelectorAll('.list-section')))
+      this.lDragger.on('drop', (el, wrapper, target, silblings) => {
+        const targetList = {
+          id: el.dataset.listId * 1,
+          pos: 65535,
+        }
+        const {prev, next} = dragger.sibling({
+          el,
+          wrapper,
+          candidates: Array.from(wrapper.querySelectorAll('.list')),
+          type: 'list'
+        })
+
+        if (!prev && next) targetList.pos = next.pos / 2
+        else if (!next && prev) targetList.pos = prev.pos * 2
+        else if (next && prev) targetList.pos = (prev.pos + next.pos) / 2
+        this.UPDATE_LIST(targetList)
       })
     },
     // [ 보드 세팅 2 ]
