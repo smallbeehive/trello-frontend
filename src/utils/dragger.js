@@ -2,8 +2,8 @@ import dragula from 'dragula'
 import 'dragula/dist/dragula.css'
 
 const dragger = {
-  init(container) {
-    return dragula([...container])
+  init(container, options) {
+    return dragula([...container], options)
   },
   // sibling은 인자로 주어준 target을 기준으로해서
   // 전 객체와 그 다음 객체를 반환하는 그런 역할을 하도록 할게요.

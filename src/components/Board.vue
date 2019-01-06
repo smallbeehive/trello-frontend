@@ -315,7 +315,14 @@ export default {
     setListDragabble() {
       if (this.lDragger) this.lDragger.destroy()
 
-      this.lDragger = dragger.init(Array.from(this.$el.querySelectorAll('.list-section')))
+      const options = {
+        invalid: (el, handle) => !/^list/.test(handle.className)
+      }
+
+      this.lDragger = dragger.init(
+        Array.from(this.$el.querySelectorAll('.list-section')),
+        options
+      )
       this.lDragger.on('drop', (el, wrapper, target, silblings) => {
         const targetList = {
           id: el.dataset.listId * 1,
