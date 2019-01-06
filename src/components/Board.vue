@@ -64,7 +64,7 @@ export default {
   created() {
     // this.fetchData()
 
-    // [ 색상 입히기 ]
+    // [ 색상 입히기 4 ]
     // SET_THEME을 호출해줘야 되는데
     // 어디서 호출하냐면 create 될 때 호출하겠습니다.
     // 이때 fetchData가 되고난 다음에 여기서 호출하겠습니다.

@@ -29,7 +29,7 @@ export default {
       bodyColor: 'bodyColor'
     })
   },
-  // [ 색상 입히기 ]
+  // [ 색상 입히기 5 ]
   // 그런데 요 화면이 container 부분이 변경되지 않고 있죠.
   // SET_THEME mutation으로 가보면 여기는 state값을 변경만 하고 있어요.
   // 실제로 이 컬러값을 DOM에 적용하는 코드는 Navbar component의
@@ -55,6 +55,7 @@ export default {
       this.LOGOUT()
       this.$router.push('/login')
     },
+    // [ 색상 입히기 3 ]
     // (Homoe.vue의 created()에서 this.SET_THEME()을 호출해도 변화가 없음.)
     // 왜냐하면 이 Home component 에서는 단순히 SET_THEME라는 mutation을 호출했고,
     // mutation에서 상태값만 저장했기 때문이에요.
@@ -75,6 +76,15 @@ export default {
       // 고거는 함 보죠. 요 컨테이너(.containe) 부분이에요.
       const container = document.querySelector('.container')
       if (container) container.style.backgroundColor = this.bodyColor
+
+      // [색상 입히기 6]
+      // header바 부분이 또 색상이 이상한데요.
+      // header 바는 투명색으로 되있고 뒷부분이 app이나 body 부분인데
+      // 여기에 색상이 지금 없어서 그런것 같아요.
+      // 그러면 요 body 부분까지 보드 색상을 넣어주도록 하겠습니다.
+      // 색상을 바꾸는 부분이 Navbar쪽이죠.
+      const body = document.querySelector('body')
+      if (body) body.style.backgroundColor = this.bodyColor
     }
   }
 }

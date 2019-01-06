@@ -90,6 +90,7 @@ export default {
   created() {
     // This is why the '/' redirected to login page instantly
     this.fetchData()
+    // [ 색상 입히기 2 ]
     this.SET_THEME()
   },
   // data 객체에 변화가 감지되면 updated 훅이 실행됩니다.
