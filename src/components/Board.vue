@@ -166,12 +166,17 @@ export default {
       if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
       else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
       else if (prevCard && nextCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
-      console.log(targetCard)
+      // console.log(targetCard)
+      // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
+      // action 함수를 추가하겠습니다.
+      this.UPDATE_CARD(targetCard)
+      // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
     })
   },
   methods: {
     ...mapActions([
-      'FETCH_BOARD'
+      'FETCH_BOARD',
+      'UPDATE_CARD'
     ]),
     fetchData() {
       this.loading = true
