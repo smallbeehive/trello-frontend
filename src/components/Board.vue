@@ -94,7 +94,79 @@ export default {
     this.dragulaCards = dragula([
       ...Array.from(this.$el.querySelectorAll('.card-list'))
     ]).on('drop', (el, wrapper, target, siblings) => {
-      console.log('drop')
+      // 요렇게해서 간단하게 drag and drop을 구현했어요.
+      // 그러면 나머지는 요 drag 했고 drop했을 때 이 시점에
+      // position 값을 계산하는 거예요.
+      // position 값을 계산하려면 리스트내에 카드가 어느위치에 있는지
+      // 확인해야 겠죠.
+      // 첫번째로 갔는지 맨 아래로 갔는지 혹은 중간으로 갔는지를 판단해야 됩니다.
+      // 로그보다는 디버그를 통해서 어떤 값이 들어오는지 확인해 볼게요.
+      // drop 하면 debugger가 멈췄구요. 여기서 el갑이 어떤 값인지 보죠.
+      // 요 단서를 가지고 계속 개발해 볼게요.
+      // debugger
+
+      // 먼저는 타겟 카드라고 하나 만들게요. 이제 요거는 어디로 이동해야할지
+      // 그 정보를 담고있는 객체입니다.
+      // 그래서 카드 아이디를 받아야겠죠. el의 dataset으로 받을 거예요. 문자열이니까 숫자로 바꿔주고요.
+      // 기본적인 postion은 기본값 65535를 쓰겠습니다.
+      // 카드 아이디를 받으려면 CardItem에서 data-card-id 를 설정해줘야겠죠.
+      // 그리고 이제 요게 앞 뒤에 어떤 카드들이 있는지 확인해야겠죠.
+      // 그래서 그거를 변수로 prevCard로 하구요 nextCard로 해서 null값으로 초기화합니다.
+      // 그리고 나서 우리가 봐야할 엘리멘트가 wrapper 엘리멘트에요.
+      // 요것도 debugger를 찍어서 확인해 볼게요. drop해보면 wrapper는 card-list(클래스)를 의미합니다.
+      // card-list 안에는 card-item이라는 클래스명을 통해서 이렇게 되어있어요.
+      // 그럼 우리는 그 card-list를 뽑아야겠죠.
+      // wrapper의 querySelector로 .card-item으로 card-item 배열을
+      // 뽑아낼 수 있습니다. 요거는 유사배열이니까 Array.from으로 뽑아내야겠죠.
+      // 그 다음에 얘를 forEach로 돌린다음에
+      // 여기서 카드아이템 하나씩 체크하면서 현재 카드 위치를 파악해보겠습니다.
+
+      const targetCard = {
+        id: el.dataset.cardId * 1,
+        pos: 65535
+      }
+      let prevCard = null
+      let nextCard = null
+      // debugger
+
+      Array.from(wrapper.querySelectorAll('.card-item'))
+        .forEach((el, idx, arr) => {
+          // 이 배열을 순회하면서 현재 카드의 id를 받아올게요.
+          const cardId = el.dataset.cardId * 1
+          // 그래서 만약에 이 카드 아이디가 우리가 이동하고자 하는
+          // targetCard의 id와 동일하다면
+          // 앞 뒤의 카드를 계산하는 거예요.
+          // 그래서 prevCard 부터 계산할게요.
+          // 만약 idx 값이 0보다 크다면 맨 앞에 있는게 아니에요.
+          // 그래서 고것의 이전카드는 arr[idx -1]이겠죠.
+          // 여기서 cardId를 dataset으로 뽑아옵니다.
+          // 그리고 postion도 뽑아와야되요.
+          // dataset의 cardPos로 뽑아올게요. 그런데 position 정보는
+          // 아직 바인딩하지 않았어요. position 정보도
+          // :data-card-pos="data.pos"로 바인딩해줍니다.
+          // 이렇게 됬고 만약에 idx가 0이거나 0보다 작으면 맨 앞에 있는 거잖아요.
+          // prevCard는 없는 것으로 판단합니다.
+          // nextCard도 계산할 수 있는데요. idx 값이 array의 마지막 값보다
+          // 작으면, 즉 마지막이 아니라면 nextCard가 있는 거겠죠.
+          if (cardId == targetCard.id) {
+            prevCard = idx > 0 ? {
+              id: arr[idx -1].dataset.cardId * 1,
+              pos: arr[idx -1].dataset.cardPos * 1
+            } : null
+            nextCard = idx < arr.length - 1 ? {
+              id: arr[idx +1].dataset.cardId * 1,
+              pos: arr[idx +1].dataset.cardPos * 1
+            } : null
+          }
+        })
+      // 이렇게해서 prevCard와 nextCard를 배열을 순회하면서 찾았어요.
+      // 여기서 마지막 postition 값을 계산해야겠죠.
+      // prevCard가 없고, nextCard가 있다면 맨 앞에 있다는 뜻이겠죠.
+      // 이럴때는 nextCard position의 절반을 계산하면 되요.
+      if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
+      else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
+      else if (prevCard && nextCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
+      console.log(targetCard)
     })
   },
   methods: {
