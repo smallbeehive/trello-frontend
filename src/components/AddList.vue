@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
+
 export default {
   data() {
     return {
@@ -17,7 +19,15 @@ export default {
       inputTitle: ''
     }
   },
+  computed: {
+    ...mapState({
+      board: 'board'
+    })
+  },
   methods: {
+    ...mapActions([
+      'ADD_LIST'
+    ]),
     onAddList() {
       this.isAddList = true
       // this.$refs.inputTitle.focus()
@@ -26,14 +36,21 @@ export default {
       // nextTick 함수 안에 넣어줍니다.
       this.$nextTick(_ => this.$refs.inputTitle.focus())
     },
+    onSubmitTitle() {
+      this.inputTitle = this.inputTitle.trim()
+      if (!this.inputTitle) return this.restore()
+
+      const title = this.inputTitle
+      const boardId = this.board.id
+      const lastList = this.board.lists[this.board.lists.length -1]
+      const pos = lastList ? lastList.pos * 2 : 65535
+
+      this.ADD_LIST({title, boardId, pos})
+        .then(_ => this.restore())
+    },
     restore() {
       this.isAddList = false
-      this.inpuTitle = ''
-    },
-    onSubmitTitle() {
-      this.isAddList = false
-      this.inpuTitle = ''
-      console.log('enter')
+      this.inputTitle = ''
     }
   }
 }
