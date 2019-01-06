@@ -15,7 +15,10 @@
       <div class="board-wrapper">
         <div class="board">
           <div class="board-header">
-            <input v-if="isEditTitle" type="text" v-model="inputTitle" ref="inputTitle">
+            <input v-if="isEditTitle" type="text" class="form-control"
+                   v-model="inputTitle" ref="inputTitle"
+                   @blur="onSubmitTitle"
+                   @keyup.enter="onSubmitTitle">
             <span v-else class="board-title" @click="onClickTitle">{{board.title}}</span>
 
             <a class="board-header-btn show-menu" href=""
@@ -205,7 +208,8 @@ export default {
     ]),
     ...mapActions([
       'FETCH_BOARD',
-      'UPDATE_CARD'
+      'UPDATE_CARD',
+      'UPDATE_BOARD'
     ]),
     fetchData() {
       this.loading = true
@@ -307,6 +311,18 @@ export default {
       // 아마도 요부분이 클릭했을 때 바로 focus를 달게 했는데 이렇게
       // 안될 때는 this.$nextTick()을 통해서 타이머로 실행을 지연시켜 줍니다.
       this.$nextTick(() => this.$refs.inputTitle.focus())
+    },
+    onSubmitTitle() {
+      this.isEditTitle = false
+
+      this.inputTitle = this.inputTitle.trim()
+      if (!this.inputTitle) return
+
+      const id = this.board.id
+      const title = this.inputTitle
+      if (title === this.board.title) return
+
+      this.UPDATE_BOARD({id, title})
     }
   }
 }
