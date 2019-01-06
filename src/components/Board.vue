@@ -84,6 +84,9 @@ export default {
       this.SET_THEME(this.board.bgColor)
     })
 
+    // [ 보드 세팅 3 ]
+    this.SET_IS_SHOW_BOARD_SETTINGS(false)
+
     // console.log(this.$route.params.bid)
     // 이렇게 볼 수 있는 이유는 router를 설정할 때
     // Vue의 use라는 함수를 통해서 VueRouter를
@@ -280,6 +283,7 @@ export default {
         // AddCard component에서 position 값을 계산해줘야되요.
       })
     },
+    // [ 보드 세팅 2 ]
     onShowSettings() {
       this.SET_IS_SHOW_BOARD_SETTINGS(true)
     }
