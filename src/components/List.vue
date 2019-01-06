@@ -10,6 +10,10 @@
           @click="onClickTitle">
           {{data.title}}
       </div>
+
+      <!-- [리스트 삭제] -->
+      <a class="delete-list-btn" href="" @click.prevent="onDeleteList">&times;</a>
+
     </div>
     <div class="card-list" :data-list-id="data.id">
       <cardItem v-for="card in data.cards"
@@ -50,7 +54,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'UPDATE_LIST'
+      'UPDATE_LIST',
+      'DELETE_LIST'
     ]),
     onClickTitle() {
       this.isEditTitle = true
@@ -74,6 +79,10 @@ export default {
     },
     restore() {
       this.isEditTitle = false
+    },
+    onDeleteList() {
+      if (!window.confirm(`Delete ${this.data.title} list?`)) return
+      this.DELETE_LIST({id: this.data.id})
     }
   }
 }
