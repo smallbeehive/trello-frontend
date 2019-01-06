@@ -35,7 +35,7 @@ const request = (method, url, data) => {
 export const setAuthInHeader = token => {
   // token 정보를 받아서 axios library 안에다가 기능을 추가할 건데
   // 모든 request를 날리기전에 헤더값을 토큰 정보로 설정하는 역할을 하는 겁니다.
-  axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null;
+  axios.defaults.headers.common['Authorization'] = token ? `Token ${token}` : null;
 }
 
 // console.log('hi! this is from src/api/index.js')
