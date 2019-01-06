@@ -15,7 +15,9 @@
       <div class="board-wrapper">
         <div class="board">
           <div class="board-header">
-            <span class="board-title">{{board.title}}</span>
+            <input v-if="isEditTitle" type="text" v-model="inputTitle" ref="inputTitle">
+            <span v-else class="board-title" @click="onClickTitle">{{board.title}}</span>
+
             <a class="board-header-btn show-menu" href=""
               @click.prevent="onShowSettings">
               ... Show Menu
@@ -58,9 +60,11 @@ export default {
       loading: false,
       // dragula 라이브러리의 인스턴스를 만들기위한 상태변수
       // dragulaCards: null
-      cDragger: null
+      cDragger: null,
       // dragularCards 라고 되있는데 이거는 좀 간단한 이름으로
       // cDragger라고 할게요. 왜냐면 dragger를 통해서 만들었다는 의도에요.
+      isEditTitle: false,
+      inputTitle: ''
     }
   },
   computed: {
@@ -81,6 +85,14 @@ export default {
     // 그리고 fetchData가 Promise르 반환해줘야 then 함수를 쓸 수 있어요.
     // 그래서 fetchData()에서 FETCH_BOARD 실행결과를 return 해주면 되겠죠.
     this.fetchData().then(() => {
+
+      // [ 보드수정 - 타이틀 변경 ]
+      // 그런데 사실은 이 (data에 선언한 inpuTitle) 값은
+      // 이미 서버로 부터 받았을 거예요. 그렇기 때문에 created 훅에서
+      // fetchData 한다음에 받은 데이터를 세팅해주면 되겠죠.
+      // 즉, computed 속성으로 가져온 board 객체의 title 값을 세팅해주는 겁니다.
+      this.inputTitle = this.board.title
+
       this.SET_THEME(this.board.bgColor)
     })
 
@@ -286,6 +298,10 @@ export default {
     // [ 보드 세팅 2 ]
     onShowSettings() {
       this.SET_IS_SHOW_BOARD_SETTINGS(true)
+    },
+    // [ 보드 수정 - 타이틀 변경 ]
+    onClickTitle() {
+      this.isEditTitle = true
     }
   }
 }
