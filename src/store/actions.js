@@ -30,13 +30,17 @@ const actions = {
   DELETE_BOARD (_, {id}) {
     return api.board.destroy(id)
   },
+  UPDATE_BOARD ({dispatch, state}, {id, title, bgColor}) {
+    return api.board.update(id, {title, bgColor})
+      .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
+  },
   // ADD_CARD (context, {title, listId, pos) {
   ADD_CARD ({dispatch, state}, {title, listId, pos}) {
     return api.card.create(title, listId, pos)
     // 그래서 여기서 api를 성공해서 카드 추가를 완료했으면
     // 그 결과가 화면에 뿌려져야 될거예요.
     // 화면에 뿌려질려면 다시한번 보드 조회 api를 호출하는게 좋을 것 같아요.
-      .then(() => dispatch('FETCH_BOARD', {id: state.board.id}))
+      .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
       // 이 context의 dispatch 함수를 해체 문법으로 가져오겠습니다.
       // 그리고 FETCH_BOARD를 호출하도록 할게요.
       // 그런데 이 FETCH_BOARD는 두번째 인자로 아이디를 받고 있습니다.
