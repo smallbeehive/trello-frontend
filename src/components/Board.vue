@@ -39,8 +39,7 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import List from './List.vue'
-import dragula from 'dragula'
-import 'dragula/dist/dragula.css'
+import dragger from '../utils/dragger'
 
 export default {
   components: {
@@ -50,7 +49,11 @@ export default {
     return {
       bid: 0,
       loading: false,
-      dragulaCards: null
+      // dragula 라이브러리의 인스턴스를 만들기위한 상태변수
+      // dragulaCards: null
+      cDragger: null
+      // dragularCards 라고 되있는데 이거는 좀 간단한 이름으로
+      // cDragger라고 할게요. 왜냐면 dragger를 통해서 만들었다는 의도에요.
     }
   },
   computed: {
@@ -90,108 +93,75 @@ export default {
   // on 한 다음에 drop 이벤트를 받게되는데, 이때 callback 함수가 전달해주는 element가 4개입니다.
   // 그러면 요 콜백함수가 제대로 동작하는지 로그를 찍어서 확인해볼게요.
   updated() {
-    if (this.dragulaCards) this.dragulaCards.destroy()
-    this.dragulaCards = dragula([
-      ...Array.from(this.$el.querySelectorAll('.card-list'))
-    ]).on('drop', (el, wrapper, target, siblings) => {
-      // 요렇게해서 간단하게 drag and drop을 구현했어요.
-      // 그러면 나머지는 요 drag 했고 drop했을 때 이 시점에
-      // position 값을 계산하는 거예요.
-      // position 값을 계산하려면 리스트내에 카드가 어느위치에 있는지
-      // 확인해야 겠죠.
-      // 첫번째로 갔는지 맨 아래로 갔는지 혹은 중간으로 갔는지를 판단해야 됩니다.
-      // 로그보다는 디버그를 통해서 어떤 값이 들어오는지 확인해 볼게요.
-      // drop 하면 debugger가 멈췄구요. 여기서 el갑이 어떤 값인지 보죠.
-      // 요 단서를 가지고 계속 개발해 볼게요.
-      // debugger
+    // updated도 메서드로 좀 빼는게 나을 것 같아요.
+    this.setCardDragabble()
 
-      // 먼저는 타겟 카드라고 하나 만들게요. 이제 요거는 어디로 이동해야할지
-      // 그 정보를 담고있는 객체입니다.
-      // 그래서 카드 아이디를 받아야겠죠. el의 dataset으로 받을 거예요. 문자열이니까 숫자로 바꿔주고요.
-      // 기본적인 postion은 기본값 65535를 쓰겠습니다.
-      // 카드 아이디를 받으려면 CardItem에서 data-card-id 를 설정해줘야겠죠.
-      // 그리고 이제 요게 앞 뒤에 어떤 카드들이 있는지 확인해야겠죠.
-      // 그래서 그거를 변수로 prevCard로 하구요 nextCard로 해서 null값으로 초기화합니다.
-      // 그리고 나서 우리가 봐야할 엘리멘트가 wrapper 엘리멘트에요.
-      // 요것도 debugger를 찍어서 확인해 볼게요. drop해보면 wrapper는 card-list(클래스)를 의미합니다.
-      // card-list 안에는 card-item이라는 클래스명을 통해서 이렇게 되어있어요.
-      // 그럼 우리는 그 card-list를 뽑아야겠죠.
-      // wrapper의 querySelector로 .card-item으로 card-item 배열을
-      // 뽑아낼 수 있습니다. 요거는 유사배열이니까 Array.from으로 뽑아내야겠죠.
-      // 그 다음에 얘를 forEach로 돌린다음에
-      // 여기서 카드아이템 하나씩 체크하면서 현재 카드 위치를 파악해보겠습니다.
-
-      const targetCard = {
-        id: el.dataset.cardId * 1,
-        pos: 65535
-      }
-      let prevCard = null
-      let nextCard = null
-      // debugger
-
-      Array.from(wrapper.querySelectorAll('.card-item'))
-        .forEach((el, idx, arr) => {
-          // 이 배열을 순회하면서 현재 카드의 id를 받아올게요.
-          const cardId = el.dataset.cardId * 1
-          // 그래서 만약에 이 카드 아이디가 우리가 이동하고자 하는
-          // targetCard의 id와 동일하다면
-          // 앞 뒤의 카드를 계산하는 거예요.
-          // 그래서 prevCard 부터 계산할게요.
-          // 만약 idx 값이 0보다 크다면 맨 앞에 있는게 아니에요.
-          // 그래서 고것의 이전카드는 arr[idx -1]이겠죠.
-          // 여기서 cardId를 dataset으로 뽑아옵니다.
-          // 그리고 postion도 뽑아와야되요.
-          // dataset의 cardPos로 뽑아올게요. 그런데 position 정보는
-          // 아직 바인딩하지 않았어요. position 정보도
-          // :data-card-pos="data.pos"로 바인딩해줍니다.
-          // 이렇게 됬고 만약에 idx가 0이거나 0보다 작으면 맨 앞에 있는 거잖아요.
-          // prevCard는 없는 것으로 판단합니다.
-          // nextCard도 계산할 수 있는데요. idx 값이 array의 마지막 값보다
-          // 작으면, 즉 마지막이 아니라면 nextCard가 있는 거겠죠.
-          if (cardId == targetCard.id) {
-            prevCard = idx > 0 ? {
-              id: arr[idx -1].dataset.cardId * 1,
-              pos: arr[idx -1].dataset.cardPos * 1
-            } : null
-            nextCard = idx < arr.length - 1 ? {
-              id: arr[idx +1].dataset.cardId * 1,
-              pos: arr[idx +1].dataset.cardPos * 1
-            } : null
-          }
-        })
-      // 이렇게해서 prevCard와 nextCard를 배열을 순회하면서 찾았어요.
-      // 여기서 마지막 postition 값을 계산해야겠죠.
-      // prevCard가 없고, nextCard가 있다면 맨 앞에 있다는 뜻이겠죠.
-      // 이럴때는 nextCard position의 절반을 계산하면 되요.
-      if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
-      else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
-      else if (prevCard && nextCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
-      // console.log(targetCard)
-      // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
-      // action 함수를 추가하겠습니다.
-      this.UPDATE_CARD(targetCard)
-      // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
-
-      // 여기서 postiton 정보를 추가해야할 부분이 하나 더 있어요. 뭐냐면 카드를 추가할때입니다.
-      // 카드를 추가하는 부분이 AddCard하는 부분인데요.
-      // 이때 우리는 단순히 title과 listId만 넘겨줬어요.
-      // 그런데 카드는 위에서부터 차곡차곡해서 추가되기 때문에 맨 마지막에 있는 카드의
-      // 포지션 정보를 참고해서 전달해줘야 합니다.
-      // 그래야 카드 포지션 정보가 유니크하게 설정되겠죠.
-      // 자 예를 들어서 card를 더 만들어볼게요.
-      // card 4, card 5, card 6을 만들었습니다.
-      // 이때 보면 card 6번이 어떻게 되있나 볼까요.
-      // card 6을 만들었을 때 positon정보는 그대로 65535이에요.
-      // card 5도 65536이에요.
-      // 이렇게되면 card 6을 card 4와 5사이에 이동을 하더라도
-      // 사이트를 갱신하게되면 다시 값이 초기화되버리죠.
-      // 왜냐하면 요 세개의 positon 값이 다 동일하기 때문이에요.
-      // 그렇기 때문에 카드를 추가할 때 맨 마지막에 있는 카드 값을 참고해서
-      // 새로운 position 값을 계산해줘야 합니다.
-      // 그래서 고 부분을 만들어볼게요.
-      // 카드를 추가할 때 onSubmit이죠.
-      // AddCard component에서 position 값을 계산해줘야되요.
-    })
+    // if (this.dragulaCards) this.dragulaCards.destroy()
+    // this.dragulaCards = dragula([
+    //   ...Array.from(this.$el.querySelectorAll('.card-list'))
+    // ]).on('drop', (el, wrapper, target, siblings) => {
+    //   // 요렇게해서 간단하게 drag and drop을 구현했어요.
+    //   // 그러면 나머지는 요 drag 했고 drop했을 때 이 시점에
+    //   // position 값을 계산하는 거예요.
+    //   // position 값을 계산하려면 리스트내에 카드가 어느위치에 있는지
+    //   // 확인해야 겠죠.
+    //   // 첫번째로 갔는지 맨 아래로 갔는지 혹은 중간으로 갔는지를 판단해야 됩니다.
+    //   // 로그보다는 디버그를 통해서 어떤 값이 들어오는지 확인해 볼게요.
+    //   // drop 하면 debugger가 멈췄구요. 여기서 el갑이 어떤 값인지 보죠.
+    //   // 요 단서를 가지고 계속 개발해 볼게요.
+    //   // debugger
+    //
+    //   // 먼저는 타겟 카드라고 하나 만들게요. 이제 요거는 어디로 이동해야할지
+    //   // 그 정보를 담고있는 객체입니다.
+    //   // 그래서 카드 아이디를 받아야겠죠. el의 dataset으로 받을 거예요. 문자열이니까 숫자로 바꿔주고요.
+    //   // 기본적인 postion은 기본값 65535를 쓰겠습니다.
+    //   // 카드 아이디를 받으려면 CardItem에서 data-card-id 를 설정해줘야겠죠.
+    //   // 그리고 이제 요게 앞 뒤에 어떤 카드들이 있는지 확인해야겠죠.
+    //   // 그래서 그거를 변수로 prevCard로 하구요 nextCard로 해서 null값으로 초기화합니다.
+    //   // 그리고 나서 우리가 봐야할 엘리멘트가 wrapper 엘리멘트에요.
+    //   // 요것도 debugger를 찍어서 확인해 볼게요. drop해보면 wrapper는 card-list(클래스)를 의미합니다.
+    //   // card-list 안에는 card-item이라는 클래스명을 통해서 이렇게 되어있어요.
+    //   // 그럼 우리는 그 card-list를 뽑아야겠죠.
+    //   // wrapper의 querySelector로 .card-item으로 card-item 배열을
+    //   // 뽑아낼 수 있습니다. 요거는 유사배열이니까 Array.from으로 뽑아내야겠죠.
+    //   // 그 다음에 얘를 forEach로 돌린다음에
+    //   // 여기서 카드아이템 하나씩 체크하면서 현재 카드 위치를 파악해보겠습니다.
+    //
+    //   // 이렇게해서 prevCard와 nextCard를 배열을 순회하면서 찾았어요.
+    //   // 여기서 마지막 postition 값을 계산해야겠죠.
+    //   // prevCard가 없고, nextCard가 있다면 맨 앞에 있다는 뜻이겠죠.
+    //   // 이럴때는 nextCard position의 절반을 계산하면 되요.
+    //   if (!prevCard && nextCard) targetCard.pos = nextCard.pos / 2
+    //
+    //   else if (!nextCard && prevCard) targetCard.pos = prevCard.pos * 2
+    //   else if (prevCard && nextCard) targetCard.pos = (prevCard.pos + nextCard.pos) / 2
+    //
+    //   // console.log(targetCard)
+    //   // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
+    //   // action 함수를 추가하겠습니다.
+    //   this.UPDATE_CARD(targetCard)
+    //   // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
+    //
+    //   // 여기서 postiton 정보를 추가해야할 부분이 하나 더 있어요. 뭐냐면 카드를 추가할때입니다.
+    //   // 카드를 추가하는 부분이 AddCard하는 부분인데요.
+    //   // 이때 우리는 단순히 title과 listId만 넘겨줬어요.
+    //   // 그런데 카드는 위에서부터 차곡차곡해서 추가되기 때문에 맨 마지막에 있는 카드의
+    //   // 포지션 정보를 참고해서 전달해줘야 합니다.
+    //   // 그래야 카드 포지션 정보가 유니크하게 설정되겠죠.
+    //   // 자 예를 들어서 card를 더 만들어볼게요.
+    //   // card 4, card 5, card 6을 만들었습니다.
+    //   // 이때 보면 card 6번이 어떻게 되있나 볼까요.
+    //   // card 6을 만들었을 때 positon정보는 그대로 65535이에요.
+    //   // card 5도 65536이에요.
+    //   // 이렇게되면 card 6을 card 4와 5사이에 이동을 하더라도
+    //   // 사이트를 갱신하게되면 다시 값이 초기화되버리죠.
+    //   // 왜냐하면 요 세개의 positon 값이 다 동일하기 때문이에요.
+    //   // 그렇기 때문에 카드를 추가할 때 맨 마지막에 있는 카드 값을 참고해서
+    //   // 새로운 position 값을 계산해줘야 합니다.
+    //   // 그래서 고 부분을 만들어볼게요.
+    //   // 카드를 추가할 때 onSubmit이죠.
+    //   // AddCard component에서 position 값을 계산해줘야되요.
+    // })
   },
   methods: {
     ...mapActions([
@@ -206,6 +176,83 @@ export default {
       // }, 500)
       this.FETCH_BOARD({id: this.$route.params.bid})
         .then(() => this.loading = false)
+    },
+    setCardDragabble() {
+      if (this.cDragger) this.cDragger.destroy()
+
+      this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list')))
+      this.cDragger.on('drop', (el, wrapper, target, siblings) => {
+        // 요렇게해서 간단하게 drag and drop을 구현했어요.
+        // 그러면 나머지는 요 drag 했고 drop했을 때 이 시점에
+        // position 값을 계산하는 거예요.
+        // position 값을 계산하려면 리스트내에 카드가 어느위치에 있는지
+        // 확인해야 겠죠.
+        // 첫번째로 갔는지 맨 아래로 갔는지 혹은 중간으로 갔는지를 판단해야 됩니다.
+        // 로그보다는 디버그를 통해서 어떤 값이 들어오는지 확인해 볼게요.
+        // drop 하면 debugger가 멈췄구요. 여기서 el갑이 어떤 값인지 보죠.
+        // 요 단서를 가지고 계속 개발해 볼게요.
+        // debugger
+
+        // 먼저는 타겟 카드라고 하나 만들게요. 이제 요거는 어디로 이동해야할지
+        // 그 정보를 담고있는 객체입니다.
+        // 그래서 카드 아이디를 받아야겠죠. el의 dataset으로 받을 거예요. 문자열이니까 숫자로 바꿔주고요.
+        // 기본적인 postion은 기본값 65535를 쓰겠습니다.
+        // 카드 아이디를 받으려면 CardItem에서 data-card-id 를 설정해줘야겠죠.
+        // 그리고 이제 요게 앞 뒤에 어떤 카드들이 있는지 확인해야겠죠.
+        // 그래서 그거를 변수로 prevCard로 하구요 nextCard로 해서 null값으로 초기화합니다.
+        // 그리고 나서 우리가 봐야할 엘리멘트가 wrapper 엘리멘트에요.
+        // 요것도 debugger를 찍어서 확인해 볼게요. drop해보면 wrapper는 card-list(클래스)를 의미합니다.
+        // card-list 안에는 card-item이라는 클래스명을 통해서 이렇게 되어있어요.
+        // 그럼 우리는 그 card-list를 뽑아야겠죠.
+        // wrapper의 querySelector로 .card-item으로 card-item 배열을
+        // 뽑아낼 수 있습니다. 요거는 유사배열이니까 Array.from으로 뽑아내야겠죠.
+        // 그 다음에 얘를 forEach로 돌린다음에
+        // 여기서 카드아이템 하나씩 체크하면서 현재 카드 위치를 파악해보겠습니다.
+
+        const targetCard = {
+          id: el.dataset.cardId * 1,
+          pos: 65535
+        }
+        const {prev, next} = dragger.sibling({
+          el,
+          wrapper,
+          candidates: Array.from(wrapper.querySelectorAll('.card-item')),
+          type: 'card'
+        })
+
+        // 이렇게해서 prevCard와 nextCard를 배열을 순회하면서 찾았어요.
+        // 여기서 마지막 postition 값을 계산해야겠죠.
+        // prevCard가 없고, nextCard가 있다면 맨 앞에 있다는 뜻이겠죠.
+        // 이럴때는 nextCard position의 절반을 계산하면 되요.
+        if (!prev && next) targetCard.pos = next.pos / 2
+        else if (!next && prev) targetCard.pos = prev.pos * 2
+        else if (prev && next) targetCard.pos = (prev.pos + next.pos) / 2
+        // console.log(targetCard)
+        // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
+        // action 함수를 추가하겠습니다.
+        this.UPDATE_CARD(targetCard)
+        // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
+
+        // 여기서 postiton 정보를 추가해야할 부분이 하나 더 있어요. 뭐냐면 카드를 추가할때입니다.
+        // 카드를 추가하는 부분이 AddCard하는 부분인데요.
+        // 이때 우리는 단순히 title과 listId만 넘겨줬어요.
+        // 그런데 카드는 위에서부터 차곡차곡해서 추가되기 때문에 맨 마지막에 있는 카드의
+        // 포지션 정보를 참고해서 전달해줘야 합니다.
+        // 그래야 카드 포지션 정보가 유니크하게 설정되겠죠.
+        // 자 예를 들어서 card를 더 만들어볼게요.
+        // card 4, card 5, card 6을 만들었습니다.
+        // 이때 보면 card 6번이 어떻게 되있나 볼까요.
+        // card 6을 만들었을 때 positon정보는 그대로 65535이에요.
+        // card 5도 65536이에요.
+        // 이렇게되면 card 6을 card 4와 5사이에 이동을 하더라도
+        // 사이트를 갱신하게되면 다시 값이 초기화되버리죠.
+        // 왜냐하면 요 세개의 positon 값이 다 동일하기 때문이에요.
+        // 그렇기 때문에 카드를 추가할 때 맨 마지막에 있는 카드 값을 참고해서
+        // 새로운 position 값을 계산해줘야 합니다.
+        // 그래서 고 부분을 만들어볼게요.
+        // 카드를 추가할 때 onSubmit이죠.
+        // AddCard component에서 position 값을 계산해줘야되요.
+      })
     }
   }
 }
