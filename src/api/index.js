@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '../router'
 
-const DOMAIN = 'http://localhost:3000'
+const DOMAIN = 'http://localhost:8000'
 const UNAUTHORIZED = 401
 const onUnauthorized = () => {
   // this.$router.replace('/login')
@@ -63,49 +63,49 @@ export const setAuthInHeader = token => {
 
 export const board = {
   fetch(id) {
-    return id ? request('get', `/boards/${id}`) : request('get', '/boards')
+    return id ? request('get', `/board/${id}`) : request('get', '/board')
   },
   create(title) {
-    return request('post', '/boards', {title})
+    return request('post', '/board/', {title})
   },
   destroy(id) {
-    return request('delete', `/boards/${id}`)
+    return request('delete', `/board/${id}/`)
   },
   update(id, payload) {
-    return request('put', `/boards/${id}`, payload)
+    return request('put', `/board/${id}/`, payload)
   }
 }
 
 export const list = {
   create(payload) {
-    return request('post', '/lists', payload)
+    return request('post', '/list/', payload)
   },
   update(id, payload) {
-    return request('put', `/lists/${id}`, payload)
+    return request('put', `/list/${id}/`, payload)
   },
   destroy(id) {
-    return request('delete', `/lists/${id}`)
+    return request('delete', `/list/${id}/`)
   }
 }
 
 export const card = {
   create(title, listId, pos) {
-    return request('post', '/cards', {title, listId, pos})
+    return request('post', '/card/', {title, listId, pos})
   },
   fetch(id) {
-    return request('get', `/cards/${id}`)
+    return request('get', `/card/${id}/`)
   },
   update(id, payload) {
-    return request('put', `/cards/${id}`, payload)
+    return request('put', `/card/${id}/`, payload)
   },
   destroy(id) {
-    return request('delete', `/cards/${id}`)
+    return request('delete', `/card/${id}/`)
   }
 }
 
 export const auth = {
   login(email, password) {
     // return request('post', '/login', {'email': email, 'password': password})
-    return request('post', '/login', {email, password})
+    return request('post', '/user/login/', {email, password})
   }
 }
