@@ -29,5 +29,16 @@ export default {
 </script>
 
 <style>
-
+.add-list {
+  background-color: rgba(0,0,0, .1);
+  padding: 12px;
+  transition: all .3s
+}
+.add-list a {
+  color: #ddd;
+}
+.add-list:hover,
+.add-list:focus {
+  background-color: rgba(0,0,0, .3);
+}
 </style>
