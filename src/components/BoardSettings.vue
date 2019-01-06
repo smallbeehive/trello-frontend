@@ -52,7 +52,8 @@ export default {
       'SET_THEME'
     ]),
     ...mapActions([
-      'DELETE_BOARD'
+      'DELETE_BOARD',
+      'UPDATE_BOARD'
     ]),
     onClose() {
       this.SET_IS_SHOW_BOARD_SETTINGS(false)
@@ -64,8 +65,10 @@ export default {
         .then(() => this.$router.push('/'))
     },
     onChangeTheme(el) {
+      const id = this.board.id
       const bgColor = el.target.dataset.value
-      this.SET_THEME(bgColor)
+      this.UPDATE_BOARD({id, bgColor})
+        .then(_ => this.SET_THEME(bgColor))
     }
   }
 }
