@@ -6,15 +6,15 @@ const actions = {
   // title이라는 키를 사용하겠습니다.
   LOGIN ({commit}, {email, password}) {
     return api.auth.login(email, password)
-      .then(({accessToken}) => commit('LOGIN', accessToken))
+      .then(({token}) => commit('LOGIN', token))
   },
   ADD_BOARD (_, {title}) {
     // return api.board.create(title)
-    return api.board.create(title).then(data => data.item)
+    return api.board.create(title).then(data => data)
   },
   FETCH_BOARDS ({commit}) {
     return api.board.fetch().then(data => {
-      commit('SET_BOARDS', data.list)
+      commit('SET_BOARDS', data.results)
     })
   },
   FETCH_BOARD ({commit}, {id}) {
@@ -24,7 +24,7 @@ const actions = {
     // 우리가 받은 아이디를 전달해주면 그 해당하는 api를 호출하는 함수라고
     // 가정하고 만들겠습니다.
     return api.board.fetch(id).then(data => {
-      commit('SET_BOARD', data.item)
+      commit('SET_BOARD', data)
     })
   },
   DELETE_BOARD (_, {id}) {
