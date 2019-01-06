@@ -73,7 +73,10 @@ export const board = {
   },
   update(id, payload) {
     return request('put', `/board/${id}/`, payload)
-  }
+  },
+  patch(id, payload) {
+    return request('patch', `/board/${id}/`, payload)
+  },
 }
 
 export const list = {

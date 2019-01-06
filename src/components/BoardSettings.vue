@@ -53,7 +53,7 @@ export default {
     ]),
     ...mapActions([
       'DELETE_BOARD',
-      'UPDATE_BOARD'
+      'PARTIAL_UPDATE_BOARD'
     ]),
     onClose() {
       this.SET_IS_SHOW_BOARD_SETTINGS(false)
@@ -67,7 +67,7 @@ export default {
     onChangeTheme(el) {
       const id = this.board.id
       const bgColor = el.target.dataset.value
-      this.UPDATE_BOARD({id, bgColor})
+      this.PARTIAL_UPDATE_BOARD({id, bgColor})
         .then(_ => this.SET_THEME(bgColor))
     }
   }
