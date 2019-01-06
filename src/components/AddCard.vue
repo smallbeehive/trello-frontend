@@ -58,8 +58,30 @@ export default {
       // 부모 컴포넌트 List component 에서 받도록 할게요.
 
       const {inputTitle, listId} = this
-      this.ADD_CARD({title: inputTitle, listId})
+
+      // [ 카드 이동 2 - 구현 ]
+      const pos = this.newCardPos()
+
+      this.ADD_CARD({title: inputTitle, listId, pos})
         .finally(() => this.inputTitle = '')
+    },
+    newCardPos() {
+      // 여기서는 맨 마지막에 있는 카드 정보를 받아와야 겠어요.
+      // 그래서 curList라고 해서 this의 선택된 보드는 store객체에 있죠.
+      // lists에 filter를 걸어서 이 리스트와 listId가 같은지 체크하면 되겠죠.
+      // 지금 listId는 props로 받고 있어요.
+      // 요 값이 같은지 확인해서 필터를 걸구요. 필터에 0번 인덱스를 참조하면 됩니다.
+      const curList = this.$store.state.board.lists.filter(l => l.id === this.listId)[0]
+      if (!curList) return 65535
+      // 만약에 curLlist가 없다면 기본값인 65535를 반환하구요.
+      // 그렇지 않으면 이제 있는거예요.
+      // curList 중에 cards라는 배열을 가져옵니다.
+      const {cards} = curList
+      // 그래서 요 cards 배열의 length가 만약에 0이라면 이때도 기본값을 반환하도록 하죠.
+      if (!cards.length) return 65535
+      // 그리고 나서 카드의 length가 있다면 맨마지막에 있는 카드의 positon 정보를 가져오고
+      // 거기서 2배한 값을 전달해주면 되겠습니다.
+      return cards[cards.length -1].pos * 2
     },
     setupClickOutside(el) {
       document.querySelector('body').addEventListener('click', e => {
