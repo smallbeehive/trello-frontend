@@ -29,6 +29,19 @@ export default {
       bodyColor: 'bodyColor'
     })
   },
+  // [ 색상 입히기 ]
+  // 그런데 요 화면이 container 부분이 변경되지 않고 있죠.
+  // SET_THEME mutation으로 가보면 여기는 state값을 변경만 하고 있어요.
+  // 실제로 이 컬러값을 DOM에 적용하는 코드는 Navbar component의
+  // updateTheme method가 수행하고 있죠.
+  // 그렇기 때문에 요 bodyColor나 navbarColor state 값이 변경됬을 때
+  // 요 Navbar component의 updateTheme이라는 메서드를 호출해야겠죠.
+  // 그럴려면 우리가 watch를 추가하겠습니다.
+  // bodyColor로 하겠습니다. 엄밀히말하면 bodyColor죠.
+  // bodyColor를 감시하고 있다가 변경이 되면 updateTheme이 호출되도록 하겠습니다.
+  watch: {
+    'bodyColor': 'updateTheme'
+  },
   mounted() {
     this.updateTheme()
   },
