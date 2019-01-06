@@ -90,6 +90,7 @@ export default {
   created() {
     // This is why the '/' redirected to login page instantly
     this.fetchData()
+    this.SET_THEME()
   },
   // data 객체에 변화가 감지되면 updated 훅이 실행됩니다.
   // 이 친구가 하는 일은, 이 컴포넌트의 레퍼런스 중에 boardItem이라는 녀석을
@@ -179,7 +180,8 @@ export default {
     // mapMutations도 똑같이 배열로 mutation 이름을 넣어주면은
     // 이번엔 computed 속성이 아닌 method 속성에 추가할 수 있습니다.
     ...mapMutations([
-      'SET_IS_ADD_BOARD'
+      'SET_IS_ADD_BOARD',
+      'SET_THEME'
     ]),
 
     // onAddBoard(title) {
