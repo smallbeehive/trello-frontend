@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 import List from './List.vue'
 import dragger from '../utils/dragger'
 
@@ -62,7 +62,19 @@ export default {
     })
   },
   created() {
-    this.fetchData()
+    // this.fetchData()
+
+    // [ 색상 입히기 ]
+    // SET_THEME을 호출해줘야 되는데
+    // 어디서 호출하냐면 create 될 때 호출하겠습니다.
+    // 이때 fetchData가 되고난 다음에 여기서 호출하겠습니다.
+    // 이때 SET_THEME할 때 테마 컬러 값을 전달해줄 수 있죠.
+    // 보드의 컬러값은 this.board.bgColor
+    // 그리고 fetchData가 Promise르 반환해줘야 then 함수를 쓸 수 있어요.
+    // 그래서 fetchData()에서 FETCH_BOARD 실행결과를 return 해주면 되겠죠.
+    this.fetchData().then(() => {
+      this.SET_THEME(this.board.bgColor)
+    })
 
     // console.log(this.$route.params.bid)
     // 이렇게 볼 수 있는 이유는 router를 설정할 때
@@ -164,6 +176,9 @@ export default {
     // })
   },
   methods: {
+    ...mapMutations([
+      'SET_THEME'
+    ]),
     ...mapActions([
       'FETCH_BOARD',
       'UPDATE_CARD'
@@ -174,7 +189,9 @@ export default {
       //   this.bid = this.$route.params.bid
       //   this.loading = false
       // }, 500)
-      this.FETCH_BOARD({id: this.$route.params.bid})
+      // this.FETCH_BOARD({id: this.$route.params.bid})
+      // [ 색상 입히기 ]
+      return this.FETCH_BOARD({id: this.$route.params.bid})
         .then(() => this.loading = false)
     },
     setCardDragabble() {
