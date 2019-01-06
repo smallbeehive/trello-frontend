@@ -10,6 +10,13 @@
           Delete Board
         </a>
       </li>
+      <li>Change Background</li>
+      <div class="color-picker">
+        <a href="" data-value="rgb(0, 121, 191)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(210, 144, 52)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(81, 152, 57)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(176, 70, 50)" @click.prevent="onChangeTheme"></a>
+      </div>
     </ul>
   </div>
 </template>
@@ -21,6 +28,22 @@ export default {
   computed: {
     ...mapState({
       board: 'board'
+    })
+  },
+  // [ 보드 수정 - 색상 변경 ]
+  // onChangeTheme을 바인딩해줘야하는데
+  // 그전에 하이퍼링크 값들이 요 data-value로 가지고 있는 색상들이
+  // 실제 이 a 태그의 background 값이 되어야 해요.
+  // mounted로 할게요.
+  // 왜냐면 이 BoardSettings component가
+  // 부모 component에 붙어서 DOM에 추가됬을 시점입니다.
+  // 그때 DOM 조작을 할 수 있기 때문에 Mounted 훅에다가
+  // 달아놓죠.
+  mounted() {
+    Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
+      el.style.backgroundColor = el.dataset.value
+      // 그러면 요 component가 rendering 될 때 data-value로 설정한 색상 값이
+      // 요 a 태그의 background 값이 될거예요.
     })
   },
   methods: {
