@@ -2,7 +2,8 @@
   <div class="list">
     <div class="list-header">
       <input v-if="isEditTitle" type="text" class="form-control input-title"
-            ref="inputTitle">
+            ref="inputTitle"
+            v-model="inputTitle">
       <div v-else class="list-header-title"
           @click="onClickTitle">
           {{data.title}}
@@ -34,10 +35,14 @@ export default {
     CardItem
   },
   props: ['data'],
+  created() {
+    this.inputTitle = this.data.title
+  },
   data() {
     return {
       isAddCard: false,
-      isEditTitle: false
+      isEditTitle: false,
+      inputTitle: ''
     }
   },
   methods: {
