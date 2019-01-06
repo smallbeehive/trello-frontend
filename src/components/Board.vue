@@ -268,6 +268,7 @@ export default {
 
         const targetCard = {
           id: el.dataset.cardId * 1,
+          listId: wrapper.dataset.listId * 1,
           pos: 65535
         }
         const {prev, next} = dragger.sibling({
