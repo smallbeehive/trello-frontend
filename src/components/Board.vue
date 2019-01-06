@@ -302,6 +302,11 @@ export default {
     // [ 보드 수정 - 타이틀 변경 ]
     onClickTitle() {
       this.isEditTitle = true
+      // this.$refs.inputTitle.focus()
+      // 코드를 다시 한번 확인해보죠.
+      // 아마도 요부분이 클릭했을 때 바로 focus를 달게 했는데 이렇게
+      // 안될 때는 this.$nextTick()을 통해서 타이머로 실행을 지연시켜 줍니다.
+      this.$nextTick(() => this.$refs.inputTitle.focus())
     }
   }
 }
