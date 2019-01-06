@@ -3,7 +3,9 @@
     <div class="list-header">
       <input v-if="isEditTitle" type="text" class="form-control input-title"
             ref="inputTitle"
-            v-model="inputTitle">
+            v-model="inputTitle"
+            @blur="onBlurTitle"
+            @keyup.enter="onSubmitTitle">
       <div v-else class="list-header-title"
           @click="onClickTitle">
           {{data.title}}
@@ -28,6 +30,7 @@
 <script>
 import AddCard from './AddCard.vue'
 import CardItem from './CardItem.vue'
+import {mapActions} from 'vuex'
 
 export default {
   components: {
@@ -46,9 +49,26 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'UPDATE_LIST'
+    ]),
     onClickTitle() {
       this.isEditTitle = true
       this.$nextTick(_ => this.$refs.inputTitle.focus())
+    },
+    onBlurTitle() {
+      this.isEditTitle = false
+    },
+    onSubmitTitle() {
+      this.onBlurTitle()
+
+      this.inputTitle = this.inputTitle.trim()
+      if (!this.inputTitle) return
+
+      const id = this.data.id
+      const title = this.inputTitle
+      if (title === this.data.title) return
+      this.UPDATE_LIST({id, title})
     }
   }
 }
