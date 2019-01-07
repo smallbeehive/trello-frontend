@@ -1,7 +1,8 @@
 import axios from 'axios'
 import router from '../router'
 
-const DOMAIN = 'http://localhost:8000'
+// const DOMAIN = 'http://localhost:8000'
+const DOMAIN = 'https://trello-api.smallbee.me'
 const UNAUTHORIZED = 401
 const onUnauthorized = () => {
   // this.$router.replace('/login')
