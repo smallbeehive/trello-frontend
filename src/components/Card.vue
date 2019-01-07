@@ -107,7 +107,7 @@ export default {
   methods: {
     ...mapActions([
       'FETCH_CARD',
-      'UPDATE_CARD'
+      'PARTIAL_UPDATE_CARD'
     ]),
     onClose() {
       this.$router.push(`/b/${this.board.id}`)
@@ -120,7 +120,7 @@ export default {
       this.toggleTitle = false
       const title = this.$refs.inputTitle.value.trim()
       if (!title) return
-      this.UPDATE_CARD({id: this.card.id, title})
+      this.PARTIAL_UPDATE_CARD({id: this.card.id, title})
       // 호출이 완료되면 여기서 다시 카드를 FETCH해주면 되겠죠.
       // (created에 있는) 요거를 해주면 되는데, id 값도 받아와야 되기 때문에
       // fetchCard()라는 method로 (기존 created 안의 코드를)
@@ -131,7 +131,7 @@ export default {
       this.toggleDesc = false
       const description = this.$refs.inputDesc.value.trim()
       if (!description) return
-      this.UPDATE_CARD({id: this.card.id, description})
+      this.PARTIAL_UPDATE_CARD({id: this.card.id, description})
         .then(() => this.fetchCard())
     }
   }
