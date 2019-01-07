@@ -86,6 +86,9 @@ export const list = {
   update(id, payload) {
     return request('put', `/list/${id}/`, payload)
   },
+  patch(id, payload) {
+    return request('patch', `/list/${id}/`, payload)
+  },
   destroy(id) {
     return request('delete', `/list/${id}/`)
   }

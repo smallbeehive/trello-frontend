@@ -47,6 +47,10 @@ const actions = {
     return api.list.update(id, {pos, title})
       .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
   },
+  PARTIAL_UPDATE_LIST ({dispatch, state}, {id, pos, title}) {
+    return api.list.patch(id, {pos, title})
+      .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
+  },
   DELETE_LIST ({dispatch, state}, {id}) {
     return api.list.destroy(id)
       .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))

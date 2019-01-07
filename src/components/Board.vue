@@ -221,7 +221,7 @@ export default {
       'FETCH_BOARD',
       'UPDATE_CARD',
       'UPDATE_BOARD',
-      'UPDATE_LIST'
+      'PARTIAL_UPDATE_LIST'
     ]),
     fetchData() {
       this.loading = true
@@ -339,7 +339,8 @@ export default {
         if (!prev && next) targetList.pos = next.pos / 2
         else if (!next && prev) targetList.pos = prev.pos * 2
         else if (next && prev) targetList.pos = (prev.pos + next.pos) / 2
-        this.UPDATE_LIST(targetList)
+        console.log(targetList.pos)
+        this.PARTIAL_UPDATE_LIST(targetList)
       })
     },
     // [ 보드 세팅 2 ]
