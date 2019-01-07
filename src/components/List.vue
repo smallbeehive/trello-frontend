@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'UPDATE_LIST',
+      'PARTIAL_UPDATE_LIST',
       'DELETE_LIST'
     ]),
     onClickTitle() {
@@ -75,7 +75,7 @@ export default {
       const id = this.data.id
       const title = this.inputTitle
       if (title === this.data.title) return
-      this.UPDATE_LIST({id, title})
+      this.PARTIAL_UPDATE_LIST({id, title})
     },
     restore() {
       this.isEditTitle = false
