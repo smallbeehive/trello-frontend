@@ -104,6 +104,9 @@ export const card = {
   update(id, payload) {
     return request('put', `/card/${id}/`, payload)
   },
+  patch(id, payload) {
+    return request('patch', `/card/${id}/`, payload)
+  },
   destroy(id) {
     return request('delete', `/card/${id}/`)
   }

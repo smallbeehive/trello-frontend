@@ -219,7 +219,7 @@ export default {
     ]),
     ...mapActions([
       'FETCH_BOARD',
-      'UPDATE_CARD',
+      'PARTIAL_UPDATE_CARD',
       'UPDATE_BOARD',
       'PARTIAL_UPDATE_LIST'
     ]),
@@ -288,7 +288,7 @@ export default {
         // console.log(targetCard)
         // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
         // action 함수를 추가하겠습니다.
-        this.UPDATE_CARD(targetCard)
+        this.PARTIAL_UPDATE_CARD(targetCard)
         // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
 
         // 여기서 postiton 정보를 추가해야할 부분이 하나 더 있어요. 뭐냐면 카드를 추가할때입니다.

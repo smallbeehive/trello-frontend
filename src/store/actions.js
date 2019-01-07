@@ -86,6 +86,10 @@ const actions = {
     // 화면을 갱신하려면 보드 정보를 FETCH해 오면 될 것 같아요.
       .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
   },
+  PARTIAL_UPDATE_CARD ({dispatch, state}, {id, title, description, pos, listId}) {
+    return api.card.patch(id, {title, description, pos, listId})
+      .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
+  },
   DELETE_CARD ({dispatch, state}, {id}) {
     return api.card.destroy(id)
       .then(_ => dispatch('FETCH_BOARD', {id: state.board.id}))
