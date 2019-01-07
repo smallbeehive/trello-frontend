@@ -77,7 +77,7 @@ const actions = {
       // 카드 정보도 전역상태에 넣어주는게 편리할 것 같아요.
       // 그래서 data를 받으면 카드를 우리 상태에 추가하기 위해서
       // 변이함수를 호출하겠습니다. SET_CARD 라고 할게요.
-      commit('SET_CARD', data.item)
+      commit('SET_CARD', data)
     })
   },
   UPDATE_CARD ({dispatch, state}, {id, title, description, pos, listId}) {
