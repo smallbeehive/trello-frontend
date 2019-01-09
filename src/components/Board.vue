@@ -17,7 +17,7 @@
           <div class="board-header">
             <input v-if="isEditTitle" type="text" class="form-control"
                    v-model="inputTitle" ref="inputTitle"
-                   @blur="onSubmitTitle"
+                   @blur="onBlurTitle"
                    @keyup.enter="onSubmitTitle">
             <span v-else class="board-title" @click="onClickTitle">{{board.title}}</span>
 
@@ -288,6 +288,7 @@ export default {
         // console.log(targetCard)
         // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
         // action 함수를 추가하겠습니다.
+        console.log(targetCard.pos)
         this.PARTIAL_UPDATE_CARD(targetCard)
         // 여기서 UPDATE_CARD를 호출합니다. 이때 targetCard를 그대로 전달해주면 되겠죠.
 
@@ -355,6 +356,13 @@ export default {
       // 아마도 요부분이 클릭했을 때 바로 focus를 달게 했는데 이렇게
       // 안될 때는 this.$nextTick()을 통해서 타이머로 실행을 지연시켜 줍니다.
       this.$nextTick(() => this.$refs.inputTitle.focus())
+
+      let boardHeader = document.querySelector('.board-header')
+      this.setupClickOutside(boardHeader)
+    },
+    onBlurTitle() {
+      // this.isEditTitle = false
+      // this.onSubmitTitle()
     },
     onSubmitTitle() {
       this.isEditTitle = false
@@ -365,8 +373,19 @@ export default {
       const id = this.board.id
       const title = this.inputTitle
       if (title === this.board.title) return
-
       this.UPDATE_BOARD({id, title})
+    },
+    setupClickOutside(el) {
+      let onSubmitTitle = () => {
+        this.onSubmitTitle()
+      }
+      document.querySelector('body').addEventListener('click', function handler(e) {
+
+        if (el.contains(e.target)) return
+        console.log('hi2')
+        onSubmitTitle()
+        document.querySelector('body').removeEventListener('click', handler)
+      })
     }
   }
 }
