@@ -12,7 +12,7 @@
     </div>
   </div> -->
   <div>
-    <div v-if="loading">Loading...</div>
+    <!-- <div v-if="loading">Loading...</div> -->
 
     <div class="home-title">Personal Boards</div>
     <div class="board-list" ref="boardList">
