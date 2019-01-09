@@ -45,9 +45,6 @@ export default {
   created() {
     this.inputTitle = this.data.title
   },
-  mounted() {
-    this.setupClickOutside(this.$el)
-  },
   data() {
     return {
       isAddCard: false,
@@ -63,6 +60,7 @@ export default {
     onClickTitle() {
       this.isEditTitle = true
       this.$nextTick(_ => this.$refs.inputTitle.focus())
+      this.setupClickOutside(this.$el)
     },
     onBlurTitle() {
       // this.isEditTitle = false
@@ -89,12 +87,15 @@ export default {
       this.DELETE_LIST({id: this.data.id})
     },
     setupClickOutside(el) {
-      document.querySelector('body').addEventListener('click', e => {
-        // if (el.contains(e.currentTarget)) return
-        console.log('hi1')
+      let onSubmitTitle = () => {
+        this.onSubmitTitle()
+      }
+      document.querySelector('body').addEventListener('click', function handler(e) {
 
         if (el.contains(e.target)) return
-        this.onSubmitTitle()
+        console.log('hi3')
+        onSubmitTitle()
+        document.querySelector('body').removeEventListener('click', handler)
       })
     }
   }
