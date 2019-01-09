@@ -93,7 +93,7 @@ export default {
       document.querySelector('body').addEventListener('click', function handler(e) {
 
         if (el.contains(e.target)) return
-        console.log('hi3')
+        console.log('hi2')
         onSubmitTitle()
         document.querySelector('body').removeEventListener('click', handler)
       })

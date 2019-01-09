@@ -382,7 +382,7 @@ export default {
       document.querySelector('body').addEventListener('click', function handler(e) {
 
         if (el.contains(e.target)) return
-        console.log('hi2')
+        console.log('hi1')
         onSubmitTitle()
         document.querySelector('body').removeEventListener('click', handler)
       })
@@ -431,6 +431,7 @@ export default {
 .board-title {
   font-weight: 700;
   font-size: 18px;
+  color: #ffffff;
 }
 .show-menu {
   font-size: 14px;

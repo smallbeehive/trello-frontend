@@ -40,10 +40,12 @@ export default {
   // 그때 DOM 조작을 할 수 있기 때문에 Mounted 훅에다가
   // 달아놓죠.
   mounted() {
-    Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
-      el.style.backgroundColor = el.dataset.value
+    // Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
+    //   el.style.backgroundColor = el.dataset.value
       // 그러면 요 component가 rendering 될 때 data-value로 설정한 색상 값이
       // 요 a 태그의 background 값이 될거예요.
+    this.$el.querySelectorAll('.color-picker a').forEach(el => {
+      el.style.backgroundColor = el.dataset.value
     })
   },
   methods: {
