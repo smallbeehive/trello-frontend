@@ -16,7 +16,7 @@
 
     </div>
     <div class="card-list" :data-list-id="data.id">
-      <cardItem v-for="card in data.cards"
+      <CardItem v-for="card in data.cards"
                 :key="card.id"
                 :data="card" />
     </div>
@@ -45,6 +45,9 @@ export default {
   created() {
     this.inputTitle = this.data.title
   },
+  mounted() {
+    this.setupClickOutside(this.$el)
+  },
   data() {
     return {
       isAddCard: false,
@@ -63,7 +66,8 @@ export default {
     },
     onBlurTitle() {
       // this.isEditTitle = false
-      this.onSubmitTitle()
+      // 2019.01.09 [hot fix of blur events]
+      // this.onSubmitTitle()
     },
     onSubmitTitle() {
       // this.onBlurTitle()
@@ -83,6 +87,15 @@ export default {
     onDeleteList() {
       if (!window.confirm(`Delete ${this.data.title} list?`)) return
       this.DELETE_LIST({id: this.data.id})
+    },
+    setupClickOutside(el) {
+      document.querySelector('body').addEventListener('click', e => {
+        // if (el.contains(e.currentTarget)) return
+        console.log('hi1')
+
+        if (el.contains(e.target)) return
+        this.onSubmitTitle()
+      })
     }
   }
 }
