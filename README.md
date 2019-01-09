@@ -92,3 +92,25 @@
 	- [ ] 보드 삭제: 삭제 후 홈페이지 이동
 
 <br>
+
+
+
+## Vue components structure
+
+- App.vue
+  - Nabvar.vue
+  - <router-view />
+      - Home.vue  (path: '/')
+      - Login.vue (path: '/login')
+      - Board.vue (path: '/b/:bid')
+        - List.vue
+          - CardItem.vue
+          - AddCard.vue
+        - AddList.vue
+        - BoardSettings.vue
+        - <router-view />
+          - Card.vue  (path: '/b/:bid/c/:cid')
+            - Modal.vue
+        - NotFount.vue
+
+<br>
