@@ -84,10 +84,18 @@ export default {
       return cards[cards.length -1].pos * 2
     },
     setupClickOutside(el) {
-      document.querySelector('body').addEventListener('click', e => {
+      let close = () => {
+        this.$emit('close')
+      }
+      document.querySelector('body').addEventListener('click', function handler(e) {
         // if (el.contains(e.currentTarget)) return
         if (el.contains(e.target)) return
-        this.$emit('close')
+        // this.$emit('close')
+
+        // 2019.01.09 [hot fix : remove duplicate event logic]
+        console.log('hi3')
+        close()
+        document.querySelector('body').removeEventListener('click', handler)
       })
     }
   }
