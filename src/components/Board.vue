@@ -283,7 +283,7 @@ export default {
         // prevCard가 없고, nextCard가 있다면 맨 앞에 있다는 뜻이겠죠.
         // 이럴때는 nextCard position의 절반을 계산하면 되요.
         if (!prev && next) targetCard.pos = next.pos / 2
-        else if (!next && prev) targetCard.pos = prev.pos * 2
+        else if (!next && prev) targetCard.pos = prev.pos + 65536
         else if (prev && next) targetCard.pos = (prev.pos + next.pos) / 2
         // console.log(targetCard)
         // 요렇게 동작을 했구요. 그러면 이제 나머지는 요 postion값을 api로 전달해주면 되요.
@@ -337,7 +337,7 @@ export default {
         })
 
         if (!prev && next) targetList.pos = next.pos / 2
-        else if (!next && prev) targetList.pos = prev.pos * 2
+        else if (!next && prev) targetList.pos = prev.pos + 65536
         else if (next && prev) targetList.pos = (prev.pos + next.pos) / 2
         console.log(targetList.pos)
         this.PARTIAL_UPDATE_LIST(targetList)
