@@ -44,6 +44,8 @@ const requireAuth = (to, from, next) => {
   // 그렇지 않을 경우에는 loginPath 경로로 리다이렉트 해버리는거죠.
   const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
   // isAuth ? next() : next(loginPath)
+  alert(store.getters.isAuth)
+  alert(to.path)
   store.getters.isAuth ? next() : next(loginPath)
 }
 
