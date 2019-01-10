@@ -43,9 +43,8 @@ const requireAuth = (to, from, next) => {
   // next 함수를 호출해서 라우팅 로직을 계속 이어서 수행하는 거구요.
   // 그렇지 않을 경우에는 loginPath 경로로 리다이렉트 해버리는거죠.
   const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
-  // isAuth ? next() : next(loginPath)
-  alert(store.getters.isAuth)
-  alert(to.path)
+  // alert(store.getters.isAuth)
+  // alert(to.path)
   store.getters.isAuth ? next() : next(loginPath)
 }
 
